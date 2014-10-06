@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Habitats/bitcoupon.svg?branch=master)](https://travis-ci.org/Habitats/bitcoupon)
+[![Build Status](https://travis-ci.org/bitcoupon/bitcoupon-on-rails.svg?branch=master)](https://travis-ci.org/bitcoupon/bitcoupon-on-rails)
 
 BitCoin Coupon
 ==============
