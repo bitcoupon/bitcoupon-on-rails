@@ -2,12 +2,13 @@ require 'test_helper'
 
 class ApiTest < ActionDispatch::IntegrationTest
   setup do
-    @api = "http://localhost:3002/backend/coupons"
+    @api = "http://localhost/backend/coupons"
     @pubkey = "sdflkj3209ikldjf23kljsd"
   end
 
   test "should get correct response from api" do
-    uri = URI.parse(@api)
+    uri = URI.parse(@api.request_uri)
+    binding.pry
     req = Net::HTTP::Get.new(uri)
 
     req.add_field "token", @pubkey

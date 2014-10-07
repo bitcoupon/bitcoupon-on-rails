@@ -235,21 +235,6 @@
     <span class="ruby-identifier">http</span>.<span class="ruby-identifier">request</span>(<span class="ruby-identifier">request</span>)
   }
 
-  <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span>.<span class="ruby-identifier">test?</span>
-    <span class="ruby-keyword">return</span> <span class="ruby-constant">Admin</span><span class="ruby-operator">::</span><span class="ruby-constant">Bitcoupon</span><span class="ruby-operator">::</span><span class="ruby-constant">CouponResult</span>.<span class="ruby-identifier">new</span> <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-string">&quot;[{\&quot;title\&quot;:\&quot;Dummy Coupon 1\&quot;,&quot;</span> <span class="ruby-operator">+</span>
-          <span class="ruby-string">&quot;\&quot;description\&quot;:\&quot;This is the dummy coupons\\ndescription!\&quot;,&quot;</span> <span class="ruby-operator">+</span>
-          <span class="ruby-string">&quot;\&quot;id\&quot;:\&quot;2\&quot;,&quot;</span> <span class="ruby-operator">+</span>
-          <span class="ruby-string">&quot;\&quot;modified\&quot;:\&quot;1311495190384\&quot;,&quot;</span> <span class="ruby-operator">+</span>
-          <span class="ruby-string">&quot;\&quot;created\&quot;:\&quot;1311499999999\&quot;&quot;</span> <span class="ruby-operator">+</span>
-        <span class="ruby-string">&quot;}&quot;</span> <span class="ruby-operator">+</span>
-        <span class="ruby-string">&quot;,{\&quot;title\&quot;:\&quot;Dummy Coupon 2\&quot;,&quot;</span> <span class="ruby-operator">+</span>
-          <span class="ruby-string">&quot;\&quot;description\&quot;:\&quot;This is the dummy coupons\\ndescription 2!\&quot;,&quot;</span> <span class="ruby-operator">+</span>
-          <span class="ruby-string">&quot;\&quot;id\&quot;:\&quot;3\&quot;,&quot;</span> <span class="ruby-operator">+</span>
-          <span class="ruby-string">&quot;\&quot;modified\&quot;:\&quot;1311495190384\&quot;,&quot;</span> <span class="ruby-operator">+</span>
-          <span class="ruby-string">&quot;\&quot;created\&quot;:\&quot;1311999999999\&quot;&quot;</span> <span class="ruby-operator">+</span>
-        <span class="ruby-string">&quot;}]&quot;</span>), <span class="ruby-string">&quot;lol&quot;</span>, <span class="ruby-string">&quot;lol&quot;</span>
-  <span class="ruby-keyword">end</span>
-
   <span class="ruby-identifier">token</span> = <span class="ruby-identifier">result</span>.<span class="ruby-identifier">header</span>[<span class="ruby-string">&quot;token&quot;</span>]
   <span class="ruby-identifier">body</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">result</span>.<span class="ruby-identifier">body</span>)
 
