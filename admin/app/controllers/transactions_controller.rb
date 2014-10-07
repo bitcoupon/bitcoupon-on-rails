@@ -1,18 +1,34 @@
-require 'shellwords'
+require_dependency '../bitcoupon/api/backend_request'
+require_dependency '../bitcoupon/api/bitcoin_call'
 
 ##
 # TransactionsController
 #
 class TransactionsController < ApplicationController
-  before_filter :set_stuff
+  def index
+    request = backend_request.new :get, '/transaction_history'
+    result = request.start
+
+    private_key = '5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'
+    transaction_history = JSON.parse(result.body)
+
+    output = bitcoin.new.creator_addresses(private_key, transaction_history)
+
+    @transactions = output.split("\n")
+  end
 
   def generate_creation
+    @json = '{"transactionId":0,"creations":[{"creationId":0,"creatorAddress":"1LfXmYtDHyCM8fHMhrMX2EtfECGjzmw3BW","amount":1,"signature":"EsykzEva7gBWpyZbpBXvyWiZb3Dwta18T6uEg4E39jdpkh3ouaNhaGyfg3rVfij4bY38pnuyedT6Ab63wyBzY2z6WUUy4P5v1QqDx 3agqkP4xN8q573oKCJTNz3nb1y4euvuAP2qeuaLRhpvGCRoJ3godvpEDKqAEGP6GyeYLw9hRtgczD9NPv5drmE7Q5DF8dd"}],"inputs":[],"outputs":[{"outputId":0,"creatorAddress":"1LfXmYtDHyCM8fHMhrMX2EtfECGjzmw3BW","amount":1,"address":"1LfXmYtDHyCM8fHMhrMX2EtfECGjzmw3BW","inputId":0}]}'
+    @command = 'java -jar ../bitcoin/bitcoin-1.0.jar'
+
+    @method_name = 'generateCreationTransaction'
+    @private_key = '5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'
+
     @output = `#{@command} #{@method_name} #{@private_key}`
 
     render(text: 'Something went wrong') and return if @output.blank?
 
     @id = verify_transaction @output
-
     @parsed_json = JSON.parse(@json)
     @parsed_output = JSON.parse(@output)
 
@@ -90,8 +106,7 @@ class TransactionsController < ApplicationController
     command = 'java -jar ../bitcoin/bitcoin-1.0.jar'
     method = 'generateSendTransaction'
 
-    output = `#{command} #{method} #{private_key} #{creator_public_key}
-              #{transaction_history} #{receiver_address}`
+    output = `#{command} #{method} #{private_key} #{creator_public_key} #{transaction_history} #{receiver_address}`
 
     if output.blank?
       render text: "Something went wrong" and return
@@ -107,43 +122,19 @@ class TransactionsController < ApplicationController
 
   private
 
-  def set_stuff
-    @json = '{"transactionId":0,"creations":[{"creationId":0,"creatorAddress":"1LfXmYtDHyCM8fHMhrMX2EtfECGjzmw3BW","amount":1,"signature":"EsykzEva7gBWpyZbpBXvyWiZb3Dwta18T6uEg4E39jdpkh3ouaNhaGyfg3rVfij4bY38pnuyedT6Ab63wyBzY2z6WUUy4P5v1QqDx 3agqkP4xN8q573oKCJTNz3nb1y4euvuAP2qeuaLRhpvGCRoJ3godvpEDKqAEGP6GyeYLw9hRtgczD9NPv5drmE7Q5DF8dd"}],"inputs":[],"outputs":[{"outputId":0,"creatorAddress":"1LfXmYtDHyCM8fHMhrMX2EtfECGjzmw3BW","amount":1,"address":"1LfXmYtDHyCM8fHMhrMX2EtfECGjzmw3BW","inputId":0}]}'
-    @command = 'java -jar ../bitcoin/bitcoin-1.0.jar'
-
-    @method_name = 'generateCreationTransaction'
-    @private_key = '5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'
-  end
-
   def get_transaction_history
-    api = 'http://localhost:3002/backend'
-    path = '/transaction_history'
-    uri = URI.parse(api + path)
-    request = Net::HTTP::Get.new(uri.path)
+    request = backend_request.new :get, '/transaction_history'
+    result = request.start
 
-    result = Net::HTTP.start(uri.hostname, uri.port) do |http|
-      http.request(request)
-    end
-
-    token = result.header['token']
     @transactions = JSON.parse(result.body)
   end
 
   def verify_transaction(output)
-    api = "http://localhost:3002/backend"
-    uri = URI.parse(api + '/verify_transaction')
-
-    request = Net::HTTP::Post.new(uri.path)
+    request = backend_request.new :post, '/verify_transaction'
     request.content_type = 'application/json'
     request.body = { transaction: output }.to_json
+    result = request.start
 
-    request.add_field 'token', 'lulz'
-
-    result = Net::HTTP.start(uri.hostname, uri.port) do |http|
-      http.request(request)
-    end
-
-    token = result.header['token']
     id = result.header['id'].to_i
     id
   end

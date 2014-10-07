@@ -11,5 +11,5 @@ Rails.application.routes.draw do
   get "generate_creation_transaction", to: "transactions#generate_creation"
   post "generate_send_transaction", to: "transactions#generate_send"
 
-  root "admin/coupons#index"
+  root "transactions#index"
 end

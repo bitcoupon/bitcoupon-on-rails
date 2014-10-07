@@ -4,6 +4,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def backend_request
-    Admin::Bitcoupon::Api::BackendRequest
+    Bitcoupon::Api::BackendRequest
+  end
+
+  def bitcoin
+    Bitcoupon::Api::BitcoinCall
   end
 end
