@@ -2,29 +2,28 @@ require 'test_helper'
 
 class ApiTest < ActionDispatch::IntegrationTest
   setup do
-    @api = "http://localhost/backend/coupons"
-    @pubkey = "sdflkj3209ikldjf23kljsd"
+    @api = 'http://localhost/backend/coupons'
+    @pubkey = 'sdflkj3209ikldjf23kljsd'
   end
 
-  test "should get correct response from api" do
+  test 'should get correct response from api' do
     uri = URI.parse(@api)
-    binding.pry
     req = Net::HTTP::Get.new(uri)
 
-    req.add_field "token", @pubkey
+    req.add_field 'token', @pubkey
 
     result = Net::HTTP.start(uri.hostname, uri.port) do |http|
       http.request(req)
     end
 
     body = JSON.parse(result.body)
-    result = body["pubkey"]
+    result = body['pubkey']
 
     assert result.eql?(@pubkey)
 
-    #assert body["pubkey"].eql?(@pubkey)
-    #result = "{\"coupons\":#{result.to_json}}"
-    #assert result.first["title"].length > 0
-    #assert result.first["id"].class.eql?(Fixnum)
+    # assert body["pubkey"].eql?(@pubkey)
+    # result = "{\"coupons\":#{result.to_json}}"
+    # assert result.first["title"].length > 0
+    # assert result.first["id"].class.eql?(Fixnum)
   end
 end

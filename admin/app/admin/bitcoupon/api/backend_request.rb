@@ -4,18 +4,18 @@ module Admin
   module Bitcoupon
     module Api
       class BackendRequest
-        attr_accessor :path, :api, :pubkey
+        attr_accessor :path, :api, :pubkey, :method
 
-        def initialize(path)
+        def initialize(http_method, path)
+          @method = http_method
           @path = path
           @api = 'http://localhost:3002/backend'
           @pubkey = 'sdgkj32pidklj23lkjd'
         end
 
-        # lol
         def start
           uri = URI.parse(api + path)
-          request = Net::HTTP::Get.new(uri.path)
+          request = http_class.new(uri.path)
 
           request.add_field 'token', pubkey
 
@@ -24,6 +24,13 @@ module Admin
           end
 
           result
+        end
+
+        def http_class
+          methods = {
+            get: Net::HTTP::Get
+          }
+          methods[method]
         end
       end
     end

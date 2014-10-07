@@ -4,7 +4,7 @@ require 'shellwords'
 module Admin
   class CouponsController < ApplicationController
     def index
-      request = Admin::Bitcoupon::Api::BackendRequest.new '/coupons'
+      request = backend_request.new :get, '/coupons'
       result = request.start
 
       token = result.header['token']
@@ -14,41 +14,32 @@ module Admin
                                                    body['pubkey'],
                                                    token)
 
-      api = 'http://localhost:3002/backend'
-      path = '/transaction_history'
-      uri = URI.parse(api + path)
-      request = Net::HTTP::Get.new(uri.path)
+      request = backend_request.new :get, '/transaction_history'
+      result = request.start
 
-      result = Net::HTTP.start(uri.hostname, uri.port) {|http|
-        http.request(request)
-      }
-      token = result.header["token"]
+      token = result.header['token']
 
       transactions = JSON.parse(result.body)
 
-      #Name: getCreatorAddresses - Argumentss: String privateKey, String transactionHistoryJson
+      # Name: getCreatorAddresses
+      # Argumentss: String privateKey, String transactionHistoryJson
 
-      private_key = "5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu"
+      private_key = '5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'
       transaction_history_json = transactions.to_s
 
-      #binding.pry
       transaction_history = Shellwords.escape transaction_history_json
 
-      command = "java -jar ../bitcoin/bitcoin-1.0.jar"
-      method = "getCreatorAddresses"
+      command = 'java -jar ../bitcoin/bitcoin-1.0.jar'
+      method = 'getCreatorAddresses'
 
-      output = %x{ #{command} #{method} #{private_key} #{transaction_history} }
+      output = `#{command} #{method} #{private_key} #{transaction_history}`
 
-      #binding.pry
-      #if output.blank?
-      #  render text: "Something went wrong" and return
-      #end
       @transactions = output.split("\n")
     end
 
     def show
       id = params[:id]
-      api = "http://localhost:3002/backend"
+      api = 'http://localhost:3002/backend'
       result = Net::HTTP.get(URI.parse(api + "/coupon/#{id}"))
       @coupon = JSON.parse(result)
     end
