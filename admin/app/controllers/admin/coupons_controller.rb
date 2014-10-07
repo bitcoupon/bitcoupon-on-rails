@@ -4,11 +4,18 @@ require 'shellwords'
 module Admin
   class CouponsController < ApplicationController
     def index
-      request = Admin::Bitcoupon::Api::BackendRequest.new "/coupons"
-      @result = request.start
-      
-      api = "http://localhost:3002/backend"
-      path = "/transaction_history"
+      request = Admin::Bitcoupon::Api::BackendRequest.new '/coupons'
+      result = request.start
+
+      token = result.header['token']
+      body = JSON.parse(result.body)
+
+      @result = Admin::Bitcoupon::CouponResult.new(body['coupons'],
+                                                   body['pubkey'],
+                                                   token)
+
+      api = 'http://localhost:3002/backend'
+      path = '/transaction_history'
       uri = URI.parse(api + path)
       request = Net::HTTP::Get.new(uri.path)
 

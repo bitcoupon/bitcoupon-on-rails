@@ -177,15 +177,11 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/admin/bitcoupon/api/backend_request.rb, line 9</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">path</span>
+            <pre><span class="ruby-comment"># File app/admin/bitcoupon/api/backend_request.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">path</span>)
   <span class="ruby-ivar">@path</span> = <span class="ruby-identifier">path</span>
-  <span class="ruby-ivar">@api</span> = <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span>.<span class="ruby-identifier">test?</span>
-    <span class="ruby-string">&quot;http://localhost:3002/backend&quot;</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-string">&quot;http://localhost:3002/backend&quot;</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-ivar">@pubkey</span> = <span class="ruby-string">&quot;sdgkj32pidklj23lkjd&quot;</span>
+  <span class="ruby-ivar">@api</span> = <span class="ruby-string">'http://localhost:3002/backend'</span>
+  <span class="ruby-ivar">@pubkey</span> = <span class="ruby-string">'sdgkj32pidklj23lkjd'</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -218,13 +214,13 @@
 
         <div class="method-description">
           
-          
+          <p>lol</p>
           
           
 
           
           <div class="method-source-code" id="start-source">
-            <pre><span class="ruby-comment"># File app/admin/bitcoupon/api/backend_request.rb, line 19</span>
+            <pre><span class="ruby-comment"># File app/admin/bitcoupon/api/backend_request.rb, line 18</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">start</span>
   <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">api</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">path</span>)
   <span class="ruby-identifier">request</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span><span class="ruby-operator">::</span><span class="ruby-constant">Get</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">path</span>)

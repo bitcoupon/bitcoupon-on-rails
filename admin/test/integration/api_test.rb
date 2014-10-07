@@ -7,7 +7,7 @@ class ApiTest < ActionDispatch::IntegrationTest
   end
 
   test "should get correct response from api" do
-    uri = URI.parse(@api.request_uri)
+    uri = URI.parse(@api)
     binding.pry
     req = Net::HTTP::Get.new(uri)
 
