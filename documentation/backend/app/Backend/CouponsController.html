@@ -75,7 +75,11 @@
     
     <li ><a href="#method-i-create">#create</a>
     
+    <li ><a href="#method-i-destroy">#destroy</a>
+    
     <li ><a href="#method-i-index">#index</a>
+    
+    <li ><a href="#method-i-new">#new</a>
     
     <li ><a href="#method-i-show">#show</a>
     
@@ -132,16 +136,54 @@
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/backend/coupons_controller.rb, line 3</span>
+            <pre><span class="ruby-comment"># File app/controllers/backend/coupons_controller.rb, line 6</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
-  <span class="ruby-identifier">coupons</span> = [
-    <span class="ruby-string">&quot;12345678&quot;</span>,
-    <span class="ruby-string">&quot;87654321&quot;</span>,
-  ]
+  <span class="ruby-comment">#binding.pry</span>
+  <span class="ruby-identifier">coupon</span> = <span class="ruby-constant">Coupon</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">coupon_params</span>)
 
-  <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">coupons</span> }
+  <span class="ruby-comment">#binding.pry</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">coupon</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-identifier">response</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-string">&quot;id&quot;</span>] = <span class="ruby-identifier">coupon</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">coupon</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">'{&quot;error&quot;:&quot;Invalid coupon&quot;}'</span>
   <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-destroy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">destroy</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="destroy-source">
+            <pre><span class="ruby-comment"># File app/controllers/backend/coupons_controller.rb, line 20</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
+  <span class="ruby-constant">Coupon</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;id&quot;</span>]).<span class="ruby-identifier">destroy</span>
+
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> { <span class="ruby-identifier">head</span><span class="ruby-operator">:</span> <span class="ruby-value">:no_content</span> }
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -172,43 +214,54 @@
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/backend/coupons_controller.rb, line 14</span>
+            <pre><span class="ruby-comment"># File app/controllers/backend/coupons_controller.rb, line 30</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
-  <span class="ruby-ivar">@public_key</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-string">&quot;token&quot;</span>]
   <span class="ruby-identifier">response</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-string">&quot;token&quot;</span>] = <span class="ruby-node">&quot;Your token: #{@public_key}&quot;</span>
+  <span class="ruby-comment">#binding.pry</span>
+  <span class="ruby-ivar">@coupons_all</span> = <span class="ruby-constant">Coupon</span>.<span class="ruby-identifier">all</span>
   <span class="ruby-ivar">@coupons</span> = {
     <span class="ruby-identifier">pubkey</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@public_key</span>,
-    <span class="ruby-identifier">coupons</span><span class="ruby-operator">:</span>
-      [
-        {
-          <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Dummy Coupon 1&quot;</span>,
-          <span class="ruby-identifier">description</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;This is the dummy coupons\ndescription!&quot;</span>,
-          <span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;2&quot;</span>,
-          <span class="ruby-identifier">modified</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;1311495190384&quot;</span>,
-          <span class="ruby-identifier">created</span><span class="ruby-operator">:</span>  <span class="ruby-string">&quot;1311499999999&quot;</span>,
-        },
-        {
-          <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Dummy Coupon 2&quot;</span>,
-          <span class="ruby-identifier">description</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;This is the dummy coupons\ndescription 2!&quot;</span>,
-          <span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;3&quot;</span>,
-          <span class="ruby-identifier">modified</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;1311495190384&quot;</span>,
-          <span class="ruby-identifier">created</span><span class="ruby-operator">:</span>  <span class="ruby-string">&quot;1311999999999&quot;</span>,
-        },
-      ]
+    <span class="ruby-identifier">coupons</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@coupons_all</span>
   }
 
-  <span class="ruby-comment">#10.times do |i|</span>
-  <span class="ruby-comment">#  coupon = @coupons[:coupons][0].clone</span>
-  <span class="ruby-comment">#  #binding.pry</span>
-  <span class="ruby-comment">#  coupon[:id] = (coupon[:id].to_i + 10 + i).to_s</span>
-  <span class="ruby-comment">#  @coupons[:coupons] &lt;&lt; coupon</span>
-  <span class="ruby-comment">#end</span>
-
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@public_key</span>.<span class="ruby-identifier">nil?</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;NO PUBLIC KEY PROVIDED&quot;</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">'{&quot;error&quot;:&quot;NO PUBLIC KEY PROVIDED&quot;}'</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">401</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@coupons</span>
   <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/controllers/backend/coupons_controller.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@coupon</span> = <span class="ruby-constant">Coupon</span>.<span class="ruby-identifier">new</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -239,19 +292,20 @@
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/backend/coupons_controller.rb, line 52</span>
+            <pre><span class="ruby-comment"># File app/controllers/backend/coupons_controller.rb, line 46</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-ivar">@public_key</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-string">&quot;TOKEN&quot;</span>]
   <span class="ruby-comment">#response.headers[&quot;TOKEN&quot;] = &quot;Your token: #{@public_key}&quot;</span>
   <span class="ruby-identifier">id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
-  <span class="ruby-ivar">@coupon</span> = {
-    <span class="ruby-identifier">title</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Dummy Coupon 1&quot;</span>,
-    <span class="ruby-identifier">description</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;This is the dummy coupons\ndescription!&quot;</span>,
-    <span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">id</span>,
-    <span class="ruby-identifier">modified</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;1311495190384&quot;</span>,
-    <span class="ruby-identifier">created</span><span class="ruby-operator">:</span>  <span class="ruby-string">&quot;1311499999999&quot;</span>,
+  <span class="ruby-ivar">@coupon</span> = <span class="ruby-constant">Coupon</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">id</span>)
+  <span class="ruby-string">%Q@coupon = {
+    title: &quot;Dummy Coupon 1&quot;,
+    description: &quot;This is the dummy coupons\ndescription!&quot;,
+    id: id,
+    modified: &quot;1311495190384&quot;,
+    created:  &quot;1311499999999&quot;,
   }
-
+  %#</span>
   <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@coupon</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
