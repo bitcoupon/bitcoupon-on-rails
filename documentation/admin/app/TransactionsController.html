@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class TransactionsController - Rails Application Documentation</title>
+
+<link href="./fonts.css" rel="stylesheet">
+<link href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/navigation.js"></script>
+<script src="./js/search_index.js"></script>
+<script src="./js/search.js"></script>
+<script src="./js/searcher.js"></script>
+<script src="./js/darkfish.js"></script>
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-generate_creation">#generate_creation</a>
+    
+    <li ><a href="#method-i-generate_send">#generate_send</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-TransactionsController">
+  <h1 id="class-TransactionsController" class="class">
+    class TransactionsController
+  </h1>
+
+  <section class="description">
+    
+<p><a href="TransactionsController.html">TransactionsController</a></p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-generate_creation" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">generate_creation</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="generate_creation-source">
+            <pre><span class="ruby-comment"># File app/controllers/transactions_controller.rb, line 9</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_creation</span>
+    <span class="ruby-ivar">@output</span> = <span class="ruby-node">%x#{@command} #{@method_name} #{@private_key}`</span>
+
+    <span class="ruby-identifier">render</span>(<span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-string">'Something went wrong'</span>) <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@output</span>.<span class="ruby-identifier">blank?</span>
+
+    <span class="ruby-ivar">@id</span> = <span class="ruby-identifier">verify_transaction</span> <span class="ruby-ivar">@output</span>
+
+    <span class="ruby-ivar">@parsed_json</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@json</span>)
+    <span class="ruby-ivar">@parsed_output</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-ivar">@output</span>)
+
+    <span class="ruby-identifier">creation_json</span> = <span class="ruby-ivar">@parsed_output</span>[<span class="ruby-string">'creations'</span>]
+    <span class="ruby-identifier">input_json</span> = <span class="ruby-ivar">@parsed_output</span>[<span class="ruby-string">'inputs'</span>]
+    <span class="ruby-identifier">output_json</span> = <span class="ruby-ivar">@parsed_output</span>[<span class="ruby-string">'outputs'</span>]
+    <span class="ruby-string">%Q
+{&quot;transactionId&quot;=&gt;0,
+ &quot;creations&quot;=&gt;
+  [{&quot;creationId&quot;=&gt;0,
+    &quot;creatorAddress&quot;=&gt;&quot;1LfXmYtDHyCM8fHMhrMX2EtfECGjzmw3BW&quot;,
+    &quot;amount&quot;=&gt;1,
+    &quot;signature&quot;=&gt;
+     &quot;EsykzF7P9LpLSFNiR6PTBJH5LrxKQLAn6bSnKwXUVgTiMQE9kGfvd3UQuYvxhKR6uFvRDBFqsRbkWzRS3Ki9AR4mMNYDLumNN1ZXn 3agqkP4xN8q573oKCJTNz3nb1y4euvuAP2qeuaLRhpvGCRoJ3godvpEDKqAEGP6GyeYLw9hRtgczD9NPv5drmE7Q5DF8dd&quot;}],
+ &quot;inputs&quot;=&gt;[],
+ &quot;outputs&quot;=&gt;
+  [{&quot;outputId&quot;=&gt;0,
+    &quot;creatorAddress&quot;=&gt;&quot;1LfXmYtDHyCM8fHMhrMX2EtfECGjzmw3BW&quot;,
+    &quot;amount&quot;=&gt;1,
+    &quot;address&quot;=&gt;&quot;1LfXmYtDHyCM8fHMhrMX2EtfECGjzmw3BW&quot;,
+    &quot;inputId&quot;=&gt;0}]}
+  %#</span>
+
+    <span class="ruby-identifier">transaction</span> = <span class="ruby-constant">Transaction</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">creation</span> = <span class="ruby-constant">Creation</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">input</span> = <span class="ruby-constant">Input</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">output</span> = <span class="ruby-constant">Output</span>.<span class="ruby-identifier">new</span>
+
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">creation_json</span>.<span class="ruby-identifier">blank?</span>
+      <span class="ruby-comment"># Only one creation for now</span>
+      <span class="ruby-identifier">creation_json</span> = <span class="ruby-identifier">creation_json</span>.<span class="ruby-identifier">first</span>
+      <span class="ruby-comment"># TODO: Make loop</span>
+
+      <span class="ruby-identifier">creation</span>.<span class="ruby-identifier">creator_address</span> = <span class="ruby-identifier">creation_json</span>[<span class="ruby-string">'creatorAddress'</span>]
+      <span class="ruby-identifier">creation</span>.<span class="ruby-identifier">amount</span> = <span class="ruby-identifier">creation_json</span>[<span class="ruby-string">'amount'</span>].<span class="ruby-identifier">to_i</span>
+      <span class="ruby-identifier">creation</span>.<span class="ruby-identifier">signature</span> = <span class="ruby-identifier">creation_json</span>[<span class="ruby-string">'signature'</span>]
+      <span class="ruby-comment"># creation.save</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">input_json</span>.<span class="ruby-identifier">blank?</span>
+      <span class="ruby-comment"># TODO: senere</span>
+      <span class="ruby-comment"># input.save</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">output_json</span>.<span class="ruby-identifier">blank?</span>
+      <span class="ruby-comment"># Only one creation for now</span>
+      <span class="ruby-identifier">output_json</span> = <span class="ruby-identifier">output_json</span>.<span class="ruby-identifier">first</span>
+      <span class="ruby-comment"># TODO: Make loop</span>
+
+      <span class="ruby-identifier">output</span>.<span class="ruby-identifier">creator_address</span> = <span class="ruby-identifier">output_json</span>[<span class="ruby-string">&quot;creatorAddress&quot;</span>]
+      <span class="ruby-identifier">output</span>.<span class="ruby-identifier">amount</span> = <span class="ruby-identifier">output_json</span>[<span class="ruby-string">&quot;amount&quot;</span>].<span class="ruby-identifier">to_i</span>
+      <span class="ruby-identifier">output</span>.<span class="ruby-identifier">address</span> = <span class="ruby-identifier">output_json</span>[<span class="ruby-string">&quot;address&quot;</span>]
+      <span class="ruby-comment"># TODO Add input når relevant</span>
+      <span class="ruby-comment">#output.save</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">transaction</span>.<span class="ruby-identifier">creation</span> = <span class="ruby-identifier">creation</span>
+    <span class="ruby-identifier">transaction</span>.<span class="ruby-identifier">input</span> = <span class="ruby-identifier">input</span>
+    <span class="ruby-identifier">transaction</span>.<span class="ruby-identifier">output</span> = <span class="ruby-identifier">output</span>
+    <span class="ruby-ivar">@transaction</span> = <span class="ruby-identifier">transaction</span>
+    <span class="ruby-comment"># render json: &quot;#{@output}\n\n\n#{@json}&quot;</span>
+  <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-generate_send" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">generate_send</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="generate_send-source">
+            <pre><span class="ruby-comment"># File app/controllers/transactions_controller.rb, line 79</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_send</span>
+  <span class="ruby-identifier">private_key</span> = <span class="ruby-string">'5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'</span>
+
+  <span class="ruby-comment"># Public key: 138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6</span>
+  <span class="ruby-identifier">creator_public_key</span> = <span class="ruby-identifier">params</span>[<span class="ruby-string">'public_key'</span>]
+
+  <span class="ruby-identifier">transaction_history</span> = <span class="ruby-constant">Shellwords</span>.<span class="ruby-identifier">escape</span> <span class="ruby-identifier">get_transaction_history</span>.<span class="ruby-identifier">to_s</span>
+
+  <span class="ruby-comment"># Receiver address: 1Kau4L6BM1h6QzLYubq1qWrQSjWdZFQgMb</span>
+  <span class="ruby-identifier">receiver_address</span> = <span class="ruby-identifier">params</span>[<span class="ruby-string">'receiver_address'</span>]
+
+  <span class="ruby-identifier">command</span> = <span class="ruby-string">'java -jar ../bitcoin/bitcoin-1.0.jar'</span>
+  <span class="ruby-identifier">method</span> = <span class="ruby-string">'generateSendTransaction'</span>
+
+  <span class="ruby-identifier">output</span> = <span class="ruby-node">%x#{command} #{method} #{private_key} #{creator_public_key}
+            #{transaction_history} #{receiver_address}`</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">output</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Something went wrong&quot;</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">id</span> = <span class="ruby-identifier">verify_transaction</span> <span class="ruby-identifier">output</span>
+
+  <span class="ruby-comment"># Name: generateSendTransaction - Argumentss: String privateKey, String creatorPublicKey</span>
+  <span class="ruby-comment">#                             , String transactionHistoryJson, String receiverAddress</span>
+  <span class="ruby-comment">#binding.pry</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_path</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

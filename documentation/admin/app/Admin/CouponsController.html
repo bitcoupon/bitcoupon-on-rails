@@ -73,7 +73,13 @@
 
   <ul class="link-list" role="directory">
     
+    <li ><a href="#method-i-create">#create</a>
+    
+    <li ><a href="#method-i-destroy">#destroy</a>
+    
     <li ><a href="#method-i-index">#index</a>
+    
+    <li ><a href="#method-i-new">#new</a>
     
     <li ><a href="#method-i-show">#show</a>
     
@@ -111,6 +117,102 @@
        </header>
 
     
+      <div id="method-i-create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="create-source">
+            <pre><span class="ruby-comment"># File app/controllers/admin/coupons_controller.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
+  <span class="ruby-identifier">api</span> = <span class="ruby-string">&quot;http://localhost:3002/backend&quot;</span>
+  <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">api</span> <span class="ruby-operator">+</span> <span class="ruby-string">'/coupons'</span>)
+
+  <span class="ruby-identifier">request</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span><span class="ruby-operator">::</span><span class="ruby-constant">Post</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">path</span>)
+  <span class="ruby-comment">#binding.pry</span>
+  <span class="ruby-identifier">request</span>.<span class="ruby-identifier">content_type</span> = <span class="ruby-string">&quot;application/json&quot;</span>
+  <span class="ruby-identifier">request</span>.<span class="ruby-identifier">body</span> = {<span class="ruby-identifier">coupon</span><span class="ruby-operator">:</span> <span class="ruby-identifier">coupon_params</span>}.<span class="ruby-identifier">to_json</span>
+
+  <span class="ruby-identifier">request</span>.<span class="ruby-identifier">add_field</span> <span class="ruby-string">&quot;token&quot;</span>, <span class="ruby-string">&quot;lulz&quot;</span>
+
+  <span class="ruby-identifier">result</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">hostname</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">http</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">http</span>.<span class="ruby-identifier">request</span>(<span class="ruby-identifier">request</span>)
+  }
+
+  <span class="ruby-identifier">token</span> = <span class="ruby-identifier">result</span>.<span class="ruby-identifier">header</span>[<span class="ruby-string">&quot;token&quot;</span>]
+  <span class="ruby-comment">#binding.pry</span>
+  <span class="ruby-identifier">id</span> = <span class="ruby-identifier">result</span>.<span class="ruby-identifier">header</span>[<span class="ruby-string">&quot;id&quot;</span>].<span class="ruby-identifier">to_i</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">admin_coupon_path</span>(<span class="ruby-identifier">id</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-destroy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">destroy</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="destroy-source">
+            <pre><span class="ruby-comment"># File app/controllers/admin/coupons_controller.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
+  <span class="ruby-identifier">api</span> = <span class="ruby-string">&quot;http://localhost:3002/backend&quot;</span>
+  <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">api</span> <span class="ruby-operator">+</span> <span class="ruby-string">'/coupon'</span> <span class="ruby-operator">+</span> <span class="ruby-string">'/'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;id&quot;</span>])
+
+  <span class="ruby-identifier">request</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span><span class="ruby-operator">::</span><span class="ruby-constant">Delete</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">path</span>)
+
+  <span class="ruby-identifier">request</span>.<span class="ruby-identifier">add_field</span> <span class="ruby-string">&quot;token&quot;</span>, <span class="ruby-string">&quot;lulz&quot;</span>
+
+  <span class="ruby-identifier">result</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">hostname</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">http</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">http</span>.<span class="ruby-identifier">request</span>(<span class="ruby-identifier">request</span>)
+  }
+
+  <span class="ruby-identifier">token</span> = <span class="ruby-identifier">result</span>.<span class="ruby-identifier">header</span>[<span class="ruby-string">&quot;token&quot;</span>]
+  <span class="ruby-comment">#binding.pry</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">admin_coupons_path</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
       <div id="method-i-index" class="method-detail ">
         
         <div class="method-heading">
@@ -130,23 +232,74 @@
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/admin/coupons_controller.rb, line 3</span>
+            <pre><span class="ruby-comment"># File app/controllers/admin/coupons_controller.rb, line 6</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
-  <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">api</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;/coupons&quot;</span>)
-  <span class="ruby-identifier">req</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span><span class="ruby-operator">::</span><span class="ruby-constant">Get</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>)
-
-  <span class="ruby-identifier">req</span>.<span class="ruby-identifier">add_field</span> <span class="ruby-string">&quot;token&quot;</span>, <span class="ruby-identifier">pubkey</span>
+  <span class="ruby-identifier">request</span> = <span class="ruby-constant">Admin</span><span class="ruby-operator">::</span><span class="ruby-constant">Bitcoupon</span><span class="ruby-operator">::</span><span class="ruby-constant">Api</span><span class="ruby-operator">::</span><span class="ruby-constant">BackendRequest</span>.<span class="ruby-identifier">new</span> <span class="ruby-string">&quot;/coupons&quot;</span>
+  <span class="ruby-ivar">@result</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">start</span>
+  
+  <span class="ruby-identifier">api</span> = <span class="ruby-string">&quot;http://localhost:3002/backend&quot;</span>
+  <span class="ruby-identifier">path</span> = <span class="ruby-string">&quot;/transaction_history&quot;</span>
+  <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">api</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">path</span>)
+  <span class="ruby-identifier">request</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span><span class="ruby-operator">::</span><span class="ruby-constant">Get</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">path</span>)
 
   <span class="ruby-identifier">result</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">hostname</span>, <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">port</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">http</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">http</span>.<span class="ruby-identifier">request</span>(<span class="ruby-identifier">req</span>)
+    <span class="ruby-identifier">http</span>.<span class="ruby-identifier">request</span>(<span class="ruby-identifier">request</span>)
   }
-
   <span class="ruby-identifier">token</span> = <span class="ruby-identifier">result</span>.<span class="ruby-identifier">header</span>[<span class="ruby-string">&quot;token&quot;</span>]
 
-  <span class="ruby-identifier">body</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">result</span>.<span class="ruby-identifier">body</span>)
-  <span class="ruby-ivar">@coupons</span> = <span class="ruby-identifier">body</span>[<span class="ruby-string">&quot;coupons&quot;</span>]
-  <span class="ruby-ivar">@pubkey_result</span>  = <span class="ruby-identifier">body</span>[<span class="ruby-string">&quot;pubkey&quot;</span>]
-  <span class="ruby-ivar">@pubkey_response</span> = <span class="ruby-identifier">token</span>
+  <span class="ruby-identifier">transactions</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">result</span>.<span class="ruby-identifier">body</span>)
+
+  <span class="ruby-comment">#Name: getCreatorAddresses - Argumentss: String privateKey, String transactionHistoryJson</span>
+
+  <span class="ruby-identifier">private_key</span> = <span class="ruby-string">&quot;5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu&quot;</span>
+  <span class="ruby-identifier">transaction_history_json</span> = <span class="ruby-identifier">transactions</span>.<span class="ruby-identifier">to_s</span>
+
+  <span class="ruby-comment">#binding.pry</span>
+  <span class="ruby-identifier">transaction_history</span> = <span class="ruby-constant">Shellwords</span>.<span class="ruby-identifier">escape</span> <span class="ruby-identifier">transaction_history_json</span>
+
+  <span class="ruby-identifier">command</span> = <span class="ruby-string">&quot;java -jar ../bitcoin/bitcoin-1.0.jar&quot;</span>
+  <span class="ruby-identifier">method</span> = <span class="ruby-string">&quot;getCreatorAddresses&quot;</span>
+
+  <span class="ruby-identifier">output</span> = <span class="ruby-node">%x{ #{command} #{method} #{private_key} #{transaction_history} }</span>
+
+  <span class="ruby-comment">#binding.pry</span>
+  <span class="ruby-comment">#if output.blank?</span>
+  <span class="ruby-comment">#  render text: &quot;Something went wrong&quot; and return</span>
+  <span class="ruby-comment">#end</span>
+  <span class="ruby-ivar">@transactions</span> = <span class="ruby-identifier">output</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;\n&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/controllers/admin/coupons_controller.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@coupon</span> = <span class="ruby-constant">Coupon</span>.<span class="ruby-identifier">new</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -177,9 +330,10 @@
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/admin/coupons_controller.rb, line 21</span>
+            <pre><span class="ruby-comment"># File app/controllers/admin/coupons_controller.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-identifier">id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]
+  <span class="ruby-identifier">api</span> = <span class="ruby-string">&quot;http://localhost:3002/backend&quot;</span>
   <span class="ruby-identifier">result</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">get</span>(<span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">api</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot;/coupon/#{id}&quot;</span>))
   <span class="ruby-ivar">@coupon</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">result</span>)
 <span class="ruby-keyword">end</span></pre>

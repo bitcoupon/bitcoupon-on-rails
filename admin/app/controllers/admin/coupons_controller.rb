@@ -1,49 +1,25 @@
-require_dependency 'bitcoupon/api/backend_request'
+require_dependency '../bitcoupon/api/backend_request'
+require_dependency '../bitcoupon/api/bitcoin_call'
 require 'shellwords'
 
 module Admin
   class CouponsController < ApplicationController
     def index
-      request = Admin::Bitcoupon::Api::BackendRequest.new "/coupons"
-      @result = request.start
-      
-      api = "http://localhost:3002/backend"
-      path = "/transaction_history"
-      uri = URI.parse(api + path)
-      request = Net::HTTP::Get.new(uri.path)
+      request = backend_request.new :get, '/coupons'
+      result = request.start
 
-      result = Net::HTTP.start(uri.hostname, uri.port) {|http|
-        http.request(request)
-      }
-      token = result.header["token"]
+      body = JSON.parse(result.body)
 
-      transactions = JSON.parse(result.body)
-
-      #Name: getCreatorAddresses - Argumentss: String privateKey, String transactionHistoryJson
-
-      private_key = "5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu"
-      transaction_history_json = transactions.to_s
-
-      #binding.pry
-      transaction_history = Shellwords.escape transaction_history_json
-
-      command = "java -jar ../bitcoin/bitcoin-1.0.jar"
-      method = "getCreatorAddresses"
-
-      output = %x{ #{command} #{method} #{private_key} #{transaction_history} }
-
-      #binding.pry
-      #if output.blank?
-      #  render text: "Something went wrong" and return
-      #end
-      @transactions = output.split("\n")
+      @coupons = body['coupons']
     end
 
     def show
       id = params[:id]
-      api = "http://localhost:3002/backend"
-      result = Net::HTTP.get(URI.parse(api + "/coupon/#{id}"))
-      @coupon = JSON.parse(result)
+
+      request = backend_request.new :get, '/coupon/' + id
+      result = request.start
+
+      @coupon = JSON.parse(result.body)
     end
 
     def new
@@ -51,48 +27,27 @@ module Admin
     end
 
     def create
-      api = "http://localhost:3002/backend"
-      uri = URI.parse(api + '/coupons')
+      request = backend_request.new :post, '/coupons'
+      request.content_type = 'application/json'
+      request.body = { coupon: coupon_params }.to_json
+      result = request.start
 
-      request = Net::HTTP::Post.new(uri.path)
-      #binding.pry
-      request.content_type = "application/json"
-      request.body = {coupon: coupon_params}.to_json
-
-      request.add_field "token", "lulz"
-
-      result = Net::HTTP.start(uri.hostname, uri.port) {|http|
-        http.request(request)
-      }
-
-      token = result.header["token"]
-      #binding.pry
-      id = result.header["id"].to_i
+      id = result.header['id'].to_i
       redirect_to admin_coupon_path(id)
     end
 
     def destroy
-      api = "http://localhost:3002/backend"
-      uri = URI.parse(api + '/coupon' + '/' + params["id"])
+      id = params['id']
+      request = backend_request.new :delete, '/coupon/' + id
+      request.start
 
-      request = Net::HTTP::Delete.new(uri.path)
-
-      request.add_field "token", "lulz"
-
-      result = Net::HTTP.start(uri.hostname, uri.port) {|http|
-        http.request(request)
-      }
-
-      token = result.header["token"]
-      #binding.pry
       redirect_to admin_coupons_path
     end
 
     private
-      def coupon_params
-        #binding.pry
-        #params[:coupon] = JSON.parse params[:coupon]
-        params.require(:coupon).permit(:title, :description)
-      end
+
+    def coupon_params
+      params.require(:coupon).permit(:title, :description)
+    end
   end
 end

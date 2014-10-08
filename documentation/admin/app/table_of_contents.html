@@ -43,6 +43,12 @@
     <a href="Admin.html">Admin</a>
   </li>
   <li class="class">
+    <a href="Admin/Bitcoupon/Api/BackendRequest.html">Admin::Bitcoupon::Api::BackendRequest</a>
+  </li>
+  <li class="class">
+    <a href="Admin/Bitcoupon/CouponResult.html">Admin::Bitcoupon::CouponResult</a>
+  </li>
+  <li class="class">
     <a href="Admin/CouponsController.html">Admin::CouponsController</a>
   </li>
   <li class="class">
@@ -50,6 +56,27 @@
   </li>
   <li class="module">
     <a href="ApplicationHelper.html">ApplicationHelper</a>
+  </li>
+  <li class="class">
+    <a href="Coupon.html">Coupon</a>
+  </li>
+  <li class="class">
+    <a href="Creation.html">Creation</a>
+  </li>
+  <li class="class">
+    <a href="Input.html">Input</a>
+  </li>
+  <li class="class">
+    <a href="Output.html">Output</a>
+  </li>
+  <li class="class">
+    <a href="Transaction.html">Transaction</a>
+  </li>
+  <li class="class">
+    <a href="TransactionsController.html">TransactionsController</a>
+  </li>
+  <li class="module">
+    <a href="TransactionsHelper.html">TransactionsHelper</a>
   </li>
   <li class="class">
     <a href="User.html">User</a>
@@ -66,9 +93,44 @@
 <ul>
 
   <li class="method">
-    <a href="ApplicationController.html#method-i-api">#api</a>
+    <a href="Admin/Bitcoupon/Api/BackendRequest.html#method-c-new">::new</a>
     &mdash;
-    <span class="container">ApplicationController</span>
+    <span class="container">Admin::Bitcoupon::Api::BackendRequest</span>
+
+  <li class="method">
+    <a href="Transaction.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">Transaction</span>
+
+  <li class="method">
+    <a href="Admin/Bitcoupon/CouponResult.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">Admin::Bitcoupon::CouponResult</span>
+
+  <li class="method">
+    <a href="Output.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">Output</span>
+
+  <li class="method">
+    <a href="Coupon.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">Coupon</span>
+
+  <li class="method">
+    <a href="Creation.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">Creation</span>
+
+  <li class="method">
+    <a href="Input.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">Input</span>
+
+  <li class="method">
+    <a href="Admin/CouponsController.html#method-i-create">#create</a>
+    &mdash;
+    <span class="container">Admin::CouponsController</span>
 
   <li class="method">
     <a href="UsersController.html#method-i-create">#create</a>
@@ -81,14 +143,24 @@
     <span class="container">UsersController</span>
 
   <li class="method">
+    <a href="Admin/CouponsController.html#method-i-destroy">#destroy</a>
+    &mdash;
+    <span class="container">Admin::CouponsController</span>
+
+  <li class="method">
     <a href="UsersController.html#method-i-edit">#edit</a>
     &mdash;
     <span class="container">UsersController</span>
 
   <li class="method">
-    <a href="UsersController.html#method-i-index">#index</a>
+    <a href="TransactionsController.html#method-i-generate_creation">#generate_creation</a>
     &mdash;
-    <span class="container">UsersController</span>
+    <span class="container">TransactionsController</span>
+
+  <li class="method">
+    <a href="TransactionsController.html#method-i-generate_send">#generate_send</a>
+    &mdash;
+    <span class="container">TransactionsController</span>
 
   <li class="method">
     <a href="Admin/CouponsController.html#method-i-index">#index</a>
@@ -96,9 +168,19 @@
     <span class="container">Admin::CouponsController</span>
 
   <li class="method">
+    <a href="UsersController.html#method-i-index">#index</a>
+    &mdash;
+    <span class="container">UsersController</span>
+
+  <li class="method">
     <a href="UsersController.html#method-i-new">#new</a>
     &mdash;
     <span class="container">UsersController</span>
+
+  <li class="method">
+    <a href="Admin/CouponsController.html#method-i-new">#new</a>
+    &mdash;
+    <span class="container">Admin::CouponsController</span>
 
   <li class="method">
     <a href="User.html#method-i-password-3F">#password?</a>
@@ -106,9 +188,34 @@
     <span class="container">User</span>
 
   <li class="method">
-    <a href="ApplicationController.html#method-i-pubkey">#pubkey</a>
+    <a href="Creation.html#method-i-persisted-3F">#persisted?</a>
     &mdash;
-    <span class="container">ApplicationController</span>
+    <span class="container">Creation</span>
+
+  <li class="method">
+    <a href="Coupon.html#method-i-persisted-3F">#persisted?</a>
+    &mdash;
+    <span class="container">Coupon</span>
+
+  <li class="method">
+    <a href="Transaction.html#method-i-persisted-3F">#persisted?</a>
+    &mdash;
+    <span class="container">Transaction</span>
+
+  <li class="method">
+    <a href="Input.html#method-i-persisted-3F">#persisted?</a>
+    &mdash;
+    <span class="container">Input</span>
+
+  <li class="method">
+    <a href="Output.html#method-i-persisted-3F">#persisted?</a>
+    &mdash;
+    <span class="container">Output</span>
+
+  <li class="method">
+    <a href="Admin/CouponsController.html#method-i-show">#show</a>
+    &mdash;
+    <span class="container">Admin::CouponsController</span>
 
   <li class="method">
     <a href="UsersController.html#method-i-show">#show</a>
@@ -116,9 +223,9 @@
     <span class="container">UsersController</span>
 
   <li class="method">
-    <a href="Admin/CouponsController.html#method-i-show">#show</a>
+    <a href="Admin/Bitcoupon/Api/BackendRequest.html#method-i-start">#start</a>
     &mdash;
-    <span class="container">Admin::CouponsController</span>
+    <span class="container">Admin::Bitcoupon::Api::BackendRequest</span>
 
   <li class="method">
     <a href="UsersController.html#method-i-update">#update</a>
