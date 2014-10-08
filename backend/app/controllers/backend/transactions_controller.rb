@@ -3,7 +3,7 @@ module Backend
   class TransactionsController < ApplicationController
     skip_before_filter :verify_authenticity_token, only: [:verify]
 
-    before_action :set_public_key, only: [:history, :verify]
+    before_action :check_headers, only: [:history, :verify, :creator_addresses]
 
     def verify
       transaction = transaction_params
@@ -45,9 +45,15 @@ module Backend
       transaction
     end
 
-    def set_public_key
-      public_key = request.headers['token']
-      response.headers['token'] = public_key
+    def check_headers
+      render json: '{"error":"No token given"}' and return if token.blank?
+      response.headers['token'] = token
+    end
+
+    def token
+      token = request.headers['token']
+      token = params[:token] if token.nil? && params[:token]
+      token
     end
   end
 end

@@ -1,6 +1,7 @@
 module Backend
+  # CouponsController
   class CouponsController < ApplicationController
-    before_action :set_headers, only: [:create, :index, :show, :destroy]
+    before_action :check_headers, only: [:create, :index, :show, :destroy]
     skip_before_filter :verify_authenticity_token, only: [:create, :destroy]
 
     def create
@@ -20,21 +21,8 @@ module Backend
       render json: { head: :no_content }
     end
 
-    def new
-      @coupon = Coupon.new
-    end
-
     def index
-      @coupons = {
-        pubkey: token,
-        coupons: Coupon.all
-      }
-
-      if token.nil?
-        render json: '{"error":"NO PUBLIC KEY PROVIDED"}', status: 401
-      else
-        render json: @coupons
-      end
+      render json: { pubkey: token, coupons: Coupon.all }
     end
 
     def show
@@ -46,7 +34,8 @@ module Backend
 
     private
 
-    def set_headers
+    def check_headers
+      render json: '{"error":"No token given"}' and return if token.blank?
       response.headers['token'] = token
     end
 
