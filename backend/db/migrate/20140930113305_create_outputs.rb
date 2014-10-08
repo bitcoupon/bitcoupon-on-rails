@@ -1,7 +1,7 @@
 class CreateOutputs < ActiveRecord::Migration
   def change
     create_table :outputs do |t|
-      #id implicit
+      # id implicit
       t.references :transaction
       t.string :coupon_type
       t.integer :amount
