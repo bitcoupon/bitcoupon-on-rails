@@ -38,7 +38,7 @@ class TransactionsController < ApplicationController
       id = verify_transaction output
       redirect_to(
         root_path,
-        notice: "Transaction #{id} has been sent to #{receiver_address}"
+        notice: "Transaction #{id} has been sent to #{params['receiver_address']}"
       )
     end
   end
