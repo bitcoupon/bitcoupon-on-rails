@@ -1,4 +1,5 @@
 module Backend
+  # TransactionsController
   class TransactionsController < ApplicationController
     skip_before_filter :verify_authenticity_token, only: [:verify]
 
@@ -8,10 +9,11 @@ module Backend
       transaction = transaction_params
 
       result = bitcoin.new.verify_transaction(transaction, Transaction.history)
+      transaction = Transaction.from_json(transaction)
 
-      if result && Transaction.save_from_json(transaction)
-        response.headers['id'] = @transaction.id.to_s
-        render json: @transaction
+      if result && transaction.save
+        response.headers['id'] = transaction.id.to_s
+        render json: transaction
       else
         render json: '{"error":"TRANSACTION NOT SAVED"}', status: 401
       end
@@ -42,7 +44,7 @@ module Backend
 
       transaction
     end
-    
+
     def set_public_key
       public_key = request.headers['token']
       response.headers['token'] = public_key

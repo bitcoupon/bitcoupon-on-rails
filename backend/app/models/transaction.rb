@@ -1,9 +1,10 @@
+# Transaction
 class Transaction < ActiveRecord::Base
   has_many :creations
   has_many :inputs
   has_many :outputs
 
-  def save_from_json(transaction_json)
+  def self.from_json(transaction_json)
     parsed_transaction = JSON.parse(transaction_json)
 
     creation_json = parsed_transaction['creations']
@@ -55,8 +56,7 @@ class Transaction < ActiveRecord::Base
     transaction.creations << creation if creation.id
     transaction.inputs << input if input.id
     transaction.outputs << output if output.id
-    @transaction = transaction
-    @transaction.save
+    transaction
   end
 
   def self.history
