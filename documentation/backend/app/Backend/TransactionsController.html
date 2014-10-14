@@ -73,7 +73,7 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-i-creator_public_key">#creator_public_key</a>
+    <li ><a href="#method-i-creator_addresses">#creator_addresses</a>
     
     <li ><a href="#method-i-history">#history</a>
     
@@ -92,6 +92,8 @@
 
   <section class="description">
     
+<p><a href="TransactionsController.html">TransactionsController</a></p>
+
   </section>
 
   
@@ -113,10 +115,10 @@
        </header>
 
     
-      <div id="method-i-creator_public_key" class="method-detail ">
+      <div id="method-i-creator_addresses" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">creator_public_key</span><span
+          <span class="method-name">creator_addresses</span><span
             class="method-args">()</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -126,36 +128,18 @@
 
         <div class="method-description">
           
-          
+          <p>TODO: Marked for deletion, or used by app?</p>
           
           
 
           
-          <div class="method-source-code" id="creator_public_key-source">
-            <pre><span class="ruby-comment"># File app/controllers/backend/transactions_controller.rb, line 31</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">creator_public_key</span>
-  <span class="ruby-identifier">command</span> = <span class="ruby-string">&quot;java -jar ../bitcoin/bitcoin-1.0.jar&quot;</span>
-  <span class="ruby-identifier">method</span> = <span class="ruby-string">&quot;getCreatorAddresses&quot;</span>
-  <span class="ruby-identifier">arg_one</span> = <span class="ruby-string">&quot;5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu&quot;</span>
-  <span class="ruby-identifier">arg_two</span> = <span class="ruby-constant">Shellwords</span>.<span class="ruby-identifier">escape</span> <span class="ruby-identifier">transaction_history</span>
-  <span class="ruby-comment">#output = %x{ #{command} #{method} #{arg_one} #{arg_two} }</span>
-  <span class="ruby-identifier">output</span> = <span class="ruby-string">&quot;&quot;</span>
-  <span class="ruby-identifier">errors</span> = <span class="ruby-string">&quot;&quot;</span>
+          <div class="method-source-code" id="creator_addresses-source">
+            <pre><span class="ruby-comment"># File app/controllers/backend/transactions_controller.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">creator_addresses</span>
+  <span class="ruby-identifier">private_key</span> = <span class="ruby-string">&#39;5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu&#39;</span>
+  <span class="ruby-identifier">output</span> = <span class="ruby-identifier">bitcoin</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">creator_addresses</span> <span class="ruby-identifier">private_key</span>, <span class="ruby-constant">Transaction</span>.<span class="ruby-identifier">history</span>
 
-
-  <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;#{command} #{method} #{arg_one} #{arg_two}&quot;</span>
-  <span class="ruby-constant">Open3</span>.<span class="ruby-identifier">popen3</span>(<span class="ruby-identifier">cmd</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">stdin</span>, <span class="ruby-identifier">stdout</span>, <span class="ruby-identifier">stderr</span>, <span class="ruby-identifier">wait_thr</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">pid</span> = <span class="ruby-identifier">wait_thr</span>.<span class="ruby-identifier">pid</span> <span class="ruby-comment"># pid of the started process.</span>
-    <span class="ruby-identifier">output</span> = <span class="ruby-identifier">stdout</span>.<span class="ruby-identifier">read</span>
-    <span class="ruby-identifier">errors</span> = <span class="ruby-identifier">stderr</span>.<span class="ruby-identifier">read</span>
-    <span class="ruby-identifier">exit_status</span> = <span class="ruby-identifier">wait_thr</span>.<span class="ruby-identifier">value</span> <span class="ruby-comment"># Process::Status object returned.</span>
-  }
-
-  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">output</span>.<span class="ruby-identifier">blank?</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">output</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-operator">!</span><span class="ruby-identifier">errors</span>.<span class="ruby-identifier">blank?</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">'{&quot;error&quot;:&quot;Exception thrown&quot;}'</span>
-  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">output</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -186,9 +170,9 @@
 
           
           <div class="method-source-code" id="history-source">
-            <pre><span class="ruby-comment"># File app/controllers/backend/transactions_controller.rb, line 27</span>
+            <pre><span class="ruby-comment"># File app/controllers/backend/transactions_controller.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">history</span>
-  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">transaction_history</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-constant">Transaction</span>.<span class="ruby-identifier">history</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -221,21 +205,16 @@
           <div class="method-source-code" id="verify-source">
             <pre><span class="ruby-comment"># File app/controllers/backend/transactions_controller.rb, line 8</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">verify</span>
-  <span class="ruby-comment">#{&quot;creations&quot;=&gt;nil, &quot;inputs&quot;=&gt;[{&quot;signature&quot;=&gt;&quot;5fRnXJUWBE3TtiWjDNjD2se3QXrX9D9yxKoxSbagUWwcjMFWAWa39iHPKZD2t3dfbaGSk4yt1JqVAcd37t55QPXpC3bNb4dU8toEFPUE 3Q4aB3XMvzGpj27JNk31cWaTVMp82YokPdXYZeYu3YdxzJU4aisesNHUuT2waDCpjUPwko7ruEQQ75zcRHHyEQ8PhcVFWm&quot;, &quot;outputId&quot;=&gt;7, &quot;inputId&quot;=&gt;0}], &quot;outputs&quot;=&gt;[{&quot;address&quot;=&gt;&quot;1Kau4L6BM1h6QzLYubq1qWrQSjWdZFQgMb&quot;, &quot;creatorAddress&quot;=&gt;&quot;138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6&quot;, &quot;outputId&quot;=&gt;0, &quot;inputId&quot;=&gt;0, &quot;amount&quot;=&gt;1}], &quot;transactionId&quot;=&gt;0, &quot;transaction&quot;=&gt;{}}</span>
-  <span class="ruby-identifier">transaction</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:transaction</span>]
+  <span class="ruby-identifier">transaction</span> = <span class="ruby-identifier">transaction_params</span>
 
-  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">transaction</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-constant">String</span>)
-    <span class="ruby-identifier">transaction</span>[<span class="ruby-string">&quot;creations&quot;</span>]=[] <span class="ruby-keyword">if</span> <span class="ruby-identifier">transaction</span>[<span class="ruby-string">&quot;creations&quot;</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-comment"># WOW, such ugly # TODO Patrick should never send nil</span>
-    <span class="ruby-identifier">transaction</span> = <span class="ruby-identifier">transaction</span>.<span class="ruby-identifier">to_json</span>.<span class="ruby-identifier">to_s</span>
-  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">bitcoin</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">verify_transaction</span>(<span class="ruby-identifier">transaction</span>, <span class="ruby-constant">Transaction</span>.<span class="ruby-identifier">history</span>)
+  <span class="ruby-identifier">transaction</span> = <span class="ruby-constant">Transaction</span>.<span class="ruby-identifier">from_json</span>(<span class="ruby-identifier">transaction</span>)
 
-  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">verify_transaction</span> <span class="ruby-identifier">transaction</span>, <span class="ruby-identifier">transaction_history</span>
-
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">save_transaction</span> <span class="ruby-identifier">transaction</span>
-    <span class="ruby-identifier">response</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-string">&quot;id&quot;</span>] = <span class="ruby-ivar">@transaction</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@transaction</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">result</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">transaction</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-identifier">response</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-string">&#39;id&#39;</span>] = <span class="ruby-identifier">transaction</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">transaction</span>
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">'{&quot;error&quot;:&quot;TRANSACTION NOT SAVED&quot;}'</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">401</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;{&quot;error&quot;:&quot;TRANSACTION NOT SAVED&quot;}&#39;</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">401</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>

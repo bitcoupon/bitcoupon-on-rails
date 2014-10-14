@@ -7,56 +7,25 @@ class Transaction < ActiveRecord::Base
   def self.from_json(transaction_json)
     parsed_transaction = JSON.parse(transaction_json)
 
+    transaction = Transaction.new
+
+    relations_from_json transaction, parsed_transaction
+
+    transaction
+  end
+
+  def self.relations_from_json(transaction, parsed_transaction)
     creation_json = parsed_transaction['creations']
     input_json = parsed_transaction['inputs']
     output_json = parsed_transaction['outputs']
 
-    transaction = Transaction.new
-    creation = Creation.new
-    input = Input.new
-    output = Output.new
-
-    unless creation_json.blank?
-      # Only one creation for now
-      creation_json = creation_json.first
-      # TODO: Make loop
-
-      creation.creator_address = creation_json['creatorAddress']
-      creation.amount = creation_json['amount'].to_i
-      creation.signature = creation_json['signature']
-      creation.save
-    end
-
-    unless input_json.blank?
-      input_json = input_json.first
-
-      input.output_id = input_json['outputId'].to_i
-      input.signature = input_json['signature']
-      input.save
-
-      o = Output.find(input.output_id)
-      o.input_id = input.id
-      o.save
-      # input.save
-    end
-
-    unless output_json.blank?
-      # Only one creation for now
-      output_json = output_json.first
-      # TODO: Make loop
-
-      output.creator_address = output_json['creatorAddress']
-      output.amount = output_json['amount'].to_i
-      output.address = output_json['address']
-      output.input_id = 0
-      # TODO: Add input when relevant
-      output.save
-    end
+    creation = Creation.from_json(creation_json)
+    input = Input.from_json(input_json)
+    output = Output.from_json(output_json)
 
     transaction.creations << creation if creation.id
     transaction.inputs << input if input.id
     transaction.outputs << output if output.id
-    transaction
   end
 
   def self.history

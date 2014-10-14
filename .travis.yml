@@ -16,7 +16,9 @@ matrix:
     - gemfile: backend/Gemfile
       env: ADMIN=true
 before_script: "source .before_travis.sh"
-script: "bundle exec rake test"
+script:
+  - "bundle exec rake test"
+  - "rubocop"
 after_script:
   - "cd .."
   - "./.after_travis.sh"

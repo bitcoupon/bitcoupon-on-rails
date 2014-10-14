@@ -1,5 +1,6 @@
 require 'test_helper'
 
+# API Test
 class ApiTest < ActionDispatch::IntegrationTest
   setup do
     @api = 'http://localhost:3002/backend/coupons'
@@ -20,10 +21,5 @@ class ApiTest < ActionDispatch::IntegrationTest
     result = body['pubkey']
 
     assert result.eql?(@pubkey)
-
-    # assert body["pubkey"].eql?(@pubkey)
-    # result = "{\"coupons\":#{result.to_json}}"
-    # assert result.first["title"].length > 0
-    # assert result.first["id"].class.eql?(Fixnum)
   end
 end

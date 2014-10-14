@@ -1,12 +1,13 @@
 require 'test_helper'
 
+# UserTest
 class UserTest < ActiveSupport::TestCase
-  test "should not save user with short password" do
+  test 'should not save user with short password' do
     user = users(:short_password)
-    user.password = "short"
+    user.password = 'short'
 
-    refute user.save, "saved user with short password"
+    refute user.save, 'saved user with short password'
     assert user.errors.messages[:password].first
-               .eql?("is too short (minimum is 8 characters)"), "wrong error"
+               .eql?('is too short (minimum is 8 characters)'), 'wrong error'
   end
 end

@@ -1,5 +1,6 @@
 require 'test_helper'
 
+# CouponTest
 class CouponTest < ActiveSupport::TestCase
   test 'coupon should have title' do
     coupon = coupons(:one)

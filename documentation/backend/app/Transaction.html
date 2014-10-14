@@ -67,7 +67,27 @@
 
     
     
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
     
+    <li ><a href="#method-c-creation_hash">::creation_hash</a>
+    
+    <li ><a href="#method-c-from_json">::from_json</a>
+    
+    <li ><a href="#method-c-history">::history</a>
+    
+    <li ><a href="#method-c-input_hash">::input_hash</a>
+    
+    <li ><a href="#method-c-output_hash">::output_hash</a>
+    
+    <li ><a href="#method-c-transaction_hash">::transaction_hash</a>
+    
+  </ul>
+</div>
+
   </div>
 </nav>
 
@@ -78,6 +98,8 @@
 
   <section class="description">
     
+<p><a href="Transaction.html">Transaction</a></p>
+
   </section>
 
   
@@ -93,6 +115,306 @@
     
 
     
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-creation_hash" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">creation_hash</span><span
+            class="method-args">(c)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="creation_hash-source">
+            <pre><span class="ruby-comment"># File app/models/transaction.rb, line 89</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">creation_hash</span>(<span class="ruby-identifier">c</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">blank?</span>
+    []
+  <span class="ruby-keyword">else</span>
+    [{
+      <span class="ruby-identifier">creationId</span><span class="ruby-operator">:</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">id</span>,
+      <span class="ruby-identifier">creatorAddress</span><span class="ruby-operator">:</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">creator_address</span>,
+      <span class="ruby-identifier">amount</span><span class="ruby-operator">:</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">amount</span>,
+      <span class="ruby-identifier">signature</span><span class="ruby-operator">:</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">signature</span>
+    }]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-from_json" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">from_json</span><span
+            class="method-args">(transaction_json)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="from_json-source">
+            <pre><span class="ruby-comment"># File app/models/transaction.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">from_json</span>(<span class="ruby-identifier">transaction_json</span>)
+  <span class="ruby-identifier">parsed_transaction</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">transaction_json</span>)
+
+  <span class="ruby-identifier">creation_json</span> = <span class="ruby-identifier">parsed_transaction</span>[<span class="ruby-string">&#39;creations&#39;</span>]
+  <span class="ruby-identifier">input_json</span> = <span class="ruby-identifier">parsed_transaction</span>[<span class="ruby-string">&#39;inputs&#39;</span>]
+  <span class="ruby-identifier">output_json</span> = <span class="ruby-identifier">parsed_transaction</span>[<span class="ruby-string">&#39;outputs&#39;</span>]
+
+  <span class="ruby-identifier">transaction</span> = <span class="ruby-constant">Transaction</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">creation</span> = <span class="ruby-constant">Creation</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">input</span> = <span class="ruby-constant">Input</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">output</span> = <span class="ruby-constant">Output</span>.<span class="ruby-identifier">new</span>
+
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">creation_json</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-comment"># Only one creation for now</span>
+    <span class="ruby-identifier">creation_json</span> = <span class="ruby-identifier">creation_json</span>.<span class="ruby-identifier">first</span>
+    <span class="ruby-comment"># TODO: Make loop</span>
+
+    <span class="ruby-identifier">creation</span>.<span class="ruby-identifier">creator_address</span> = <span class="ruby-identifier">creation_json</span>[<span class="ruby-string">&#39;creatorAddress&#39;</span>]
+    <span class="ruby-identifier">creation</span>.<span class="ruby-identifier">amount</span> = <span class="ruby-identifier">creation_json</span>[<span class="ruby-string">&#39;amount&#39;</span>].<span class="ruby-identifier">to_i</span>
+    <span class="ruby-identifier">creation</span>.<span class="ruby-identifier">signature</span> = <span class="ruby-identifier">creation_json</span>[<span class="ruby-string">&#39;signature&#39;</span>]
+    <span class="ruby-identifier">creation</span>.<span class="ruby-identifier">save</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">input_json</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-identifier">input_json</span> = <span class="ruby-identifier">input_json</span>.<span class="ruby-identifier">first</span>
+
+    <span class="ruby-identifier">input</span>.<span class="ruby-identifier">output_id</span> = <span class="ruby-identifier">input_json</span>[<span class="ruby-string">&#39;outputId&#39;</span>].<span class="ruby-identifier">to_i</span>
+    <span class="ruby-identifier">input</span>.<span class="ruby-identifier">signature</span> = <span class="ruby-identifier">input_json</span>[<span class="ruby-string">&#39;signature&#39;</span>]
+    <span class="ruby-identifier">input</span>.<span class="ruby-identifier">save</span>
+
+    <span class="ruby-identifier">o</span> = <span class="ruby-constant">Output</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">input</span>.<span class="ruby-identifier">output_id</span>)
+    <span class="ruby-identifier">o</span>.<span class="ruby-identifier">input_id</span> = <span class="ruby-identifier">input</span>.<span class="ruby-identifier">id</span>
+    <span class="ruby-identifier">o</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-comment"># input.save</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">output_json</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-comment"># Only one creation for now</span>
+    <span class="ruby-identifier">output_json</span> = <span class="ruby-identifier">output_json</span>.<span class="ruby-identifier">first</span>
+    <span class="ruby-comment"># TODO: Make loop</span>
+
+    <span class="ruby-identifier">output</span>.<span class="ruby-identifier">creator_address</span> = <span class="ruby-identifier">output_json</span>[<span class="ruby-string">&#39;creatorAddress&#39;</span>]
+    <span class="ruby-identifier">output</span>.<span class="ruby-identifier">amount</span> = <span class="ruby-identifier">output_json</span>[<span class="ruby-string">&#39;amount&#39;</span>].<span class="ruby-identifier">to_i</span>
+    <span class="ruby-identifier">output</span>.<span class="ruby-identifier">address</span> = <span class="ruby-identifier">output_json</span>[<span class="ruby-string">&#39;address&#39;</span>]
+    <span class="ruby-identifier">output</span>.<span class="ruby-identifier">input_id</span> = <span class="ruby-value">0</span>
+    <span class="ruby-comment"># TODO: Add input when relevant</span>
+    <span class="ruby-identifier">output</span>.<span class="ruby-identifier">save</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">transaction</span>.<span class="ruby-identifier">creations</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">creation</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">creation</span>.<span class="ruby-identifier">id</span>
+  <span class="ruby-identifier">transaction</span>.<span class="ruby-identifier">inputs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">input</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">input</span>.<span class="ruby-identifier">id</span>
+  <span class="ruby-identifier">transaction</span>.<span class="ruby-identifier">outputs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">output</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">output</span>.<span class="ruby-identifier">id</span>
+  <span class="ruby-identifier">transaction</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-history" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">history</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="history-source">
+            <pre><span class="ruby-comment"># File app/models/transaction.rb, line 62</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">history</span>
+  <span class="ruby-identifier">transactions</span> = <span class="ruby-identifier">all</span>.<span class="ruby-identifier">to_a</span>
+
+  <span class="ruby-identifier">history</span> = { <span class="ruby-identifier">transactionList</span><span class="ruby-operator">:</span> [] }
+
+  <span class="ruby-identifier">transactions</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">transaction</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">history</span>[<span class="ruby-value">:transactionList</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">transaction_hash</span>(<span class="ruby-identifier">transaction</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">history</span>.<span class="ruby-identifier">to_json</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-input_hash" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">input_hash</span><span
+            class="method-args">(i)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="input_hash-source">
+            <pre><span class="ruby-comment"># File app/models/transaction.rb, line 102</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">input_hash</span>(<span class="ruby-identifier">i</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">blank?</span>
+    []
+  <span class="ruby-keyword">else</span>
+    [{
+      <span class="ruby-identifier">inputId</span><span class="ruby-operator">:</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">id</span>,
+      <span class="ruby-identifier">outputId</span><span class="ruby-operator">:</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">output_id</span>.<span class="ruby-identifier">to_i</span>,
+      <span class="ruby-identifier">signature</span><span class="ruby-operator">:</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">signature</span>
+    }]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-output_hash" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">output_hash</span><span
+            class="method-args">(o)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="output_hash-source">
+            <pre><span class="ruby-comment"># File app/models/transaction.rb, line 114</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">output_hash</span>(<span class="ruby-identifier">o</span>)
+  <span class="ruby-keyword">return</span> [] <span class="ruby-keyword">if</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">blank?</span>
+  [{
+    <span class="ruby-identifier">outputId</span><span class="ruby-operator">:</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">id</span>,
+    <span class="ruby-identifier">creatorAddress</span><span class="ruby-operator">:</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">creator_address</span>,
+    <span class="ruby-identifier">amount</span><span class="ruby-operator">:</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">amount</span>,
+    <span class="ruby-identifier">address</span><span class="ruby-operator">:</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">address</span>,
+    <span class="ruby-identifier">inputId</span><span class="ruby-operator">:</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">input_id</span>
+  }]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-transaction_hash" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">transaction_hash</span><span
+            class="method-args">(t)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="transaction_hash-source">
+            <pre><span class="ruby-comment"># File app/models/transaction.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">transaction_hash</span>(<span class="ruby-identifier">t</span>)
+  <span class="ruby-identifier">transaction_hash</span> = { <span class="ruby-identifier">transactionId</span><span class="ruby-operator">:</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span> }
+
+  <span class="ruby-identifier">c</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">creations</span>.<span class="ruby-identifier">first</span>
+  <span class="ruby-identifier">transaction_hash</span>[<span class="ruby-string">&#39;creations&#39;</span>] = <span class="ruby-identifier">creation_hash</span>(<span class="ruby-identifier">c</span>)
+
+  <span class="ruby-identifier">i</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">inputs</span>.<span class="ruby-identifier">first</span>
+  <span class="ruby-identifier">transaction_hash</span>[<span class="ruby-string">&#39;inputs&#39;</span>] = <span class="ruby-identifier">input_hash</span>(<span class="ruby-identifier">i</span>)
+
+  <span class="ruby-identifier">o</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">outputs</span>.<span class="ruby-identifier">first</span>
+  <span class="ruby-identifier">transaction_hash</span>[<span class="ruby-string">&#39;outputs&#39;</span>] = <span class="ruby-identifier">output_hash</span>(<span class="ruby-identifier">o</span>)
+
+  <span class="ruby-identifier">transaction_hash</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
   </section>
 </main>
 

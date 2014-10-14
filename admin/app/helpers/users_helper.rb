@@ -1,9 +1,10 @@
+# UsersHelper
 module UsersHelper
-  def user_password_message user
+  def user_password_message(user)
     if user.password?
-      "Password set"
+      'Password set'
     else
-      "Password empty"
+      'Password empty'
     end
   end
 end

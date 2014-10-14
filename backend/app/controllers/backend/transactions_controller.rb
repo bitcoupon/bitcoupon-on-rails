@@ -46,7 +46,10 @@ module Backend
     end
 
     def check_headers
-      render json: '{"error":"No token given"}' and return if token.blank?
+      if token.blank?
+        render json: '{"error":"No token given"}'
+        return
+      end
       response.headers['token'] = token
     end
 

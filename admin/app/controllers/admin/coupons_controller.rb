@@ -1,8 +1,8 @@
 require_dependency '../bitcoupon/api/backend_request'
 require_dependency '../bitcoupon/api/bitcoin_call'
-require 'shellwords'
 
 module Admin
+  # CouponsController
   class CouponsController < ApplicationController
     def index
       request = backend_request.new :get, '/coupons'

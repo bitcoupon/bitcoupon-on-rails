@@ -36,10 +36,9 @@ class TransactionsController < ApplicationController
       render text: 'Something went wrong'
     else
       id = verify_transaction output
-      redirect_to(
-        root_path,
-        notice: "Transaction #{id} has been sent to #{params['receiver_address']}"
-      )
+      redirect_to(root_path,
+                  notice: "Transaction #{id} has been "\
+                           "sent to #{params['receiver_address']}")
     end
   end
 

@@ -15,15 +15,15 @@ namespace :doc do
     puts "Documentation created in #{`pwd`.chomp}/doc/app"
     `rm -r ../documentation/admin/app`
     `mv doc/app ../documentation/admin`
-    puts "Documentation moved to " +
+    puts 'Documentation moved to '\
       "#{`pwd`.split(/\//)
                  .reverse
                  .drop(1)
                  .reverse
-                 .join("/")
+                 .join('/')
     }" +
-    "/documentation/admin"
+    '/documentation/admin'
     `rmdir doc`
-    puts "Removed doc from backend"
+    puts 'Removed doc from admin'
   end
 end

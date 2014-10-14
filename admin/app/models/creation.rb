@@ -1,24 +1,34 @@
+# Creation
 class Creation
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
-  
+
   attr_accessor :id, :transaction_id, :creator_address, :amount, :signature
 
-  # Rails has method named transaction, can't use that again here.
-  #belongs_to :bitcoin_transaction, foreign_key: "transaction_id", class_name: "Transaction"
-
-  
-  #validates_format_of :email, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i
-  #validates_length_of :content, :maximum => 500
-  
   def initialize(attributes = {})
     attributes.each do |name, value|
       send("#{name}=", value)
     end
   end
-  
+
   def persisted?
     false
+  end
+
+  def self.from_json(creation_json)
+    creation = Creation.new
+
+    unless creation_json.blank?
+      # Only one creation for now
+      creation_json = creation_json.first
+      # TODO: Make loop
+
+      creation.creator_address = creation_json['creatorAddress']
+      creation.amount = creation_json['amount'].to_i
+      creation.signature = creation_json['signature']
+    end
+
+    creation
   end
 end
