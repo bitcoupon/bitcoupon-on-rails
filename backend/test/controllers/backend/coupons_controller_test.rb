@@ -11,7 +11,7 @@ module Backend
     test 'should get index' do
       get :index
       assert_response :success
-      assert_not_nil assigns(:coupons)
+      assert response.content_type.eql?('application/json')
     end
   end
 end
