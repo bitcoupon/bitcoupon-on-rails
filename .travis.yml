@@ -18,7 +18,7 @@ matrix:
 before_script: "source .before_travis.sh"
 script:
   - "bundle exec rake test"
-  - "rubocop"
+  - "bundle exec rubocop"
 after_script:
   - "cd .."
   - "./.after_travis.sh"
