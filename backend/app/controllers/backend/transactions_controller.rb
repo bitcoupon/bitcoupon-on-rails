@@ -12,7 +12,7 @@ module Backend
       transaction = Transaction.from_json(transaction)
 
       if result && transaction.save
-        response.headers["id"] = transaction.id.to_s
+        response.headers['id'] = transaction.id.to_s
         render json: transaction
       else
         render json: '{"error":"TRANSACTION NOT SAVED"}', status: 401
