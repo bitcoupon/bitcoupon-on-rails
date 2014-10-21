@@ -39,9 +39,7 @@ class TransactionsController < ApplicationController
       render(text: 'Something went wrong')
     else
       @id = verify_transaction output
-      parsed_output = JSON.parse(output)
-
-      @transaction = Transaction.from_json(parsed_output)
+      @transaction = Transaction.from_json(JSON.parse(output))
 
       redirect_to(root_path, notice: "Transaction #{@transaction.id} created")
     end

@@ -6,7 +6,6 @@ module Backend
     before_action :check_headers, only: [:total]
 
     def total
-      binding.pry
     end
 
     private
