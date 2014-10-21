@@ -29,6 +29,24 @@ class TransactionsController < ApplicationController
     end
   end
 
+  def generate_create
+    private_key = '5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'
+    payload     = 'Lulz'
+
+    output = bitcoin.new.generate_create_transaction(private_key, payload)
+
+    if output.blank?
+      render(text: 'Something went wrong')
+    else
+      @id = verify_transaction output
+      parsed_output = JSON.parse(output)
+
+      @transaction = Transaction.from_json(parsed_output)
+
+      redirect_to(root_path, notice: "Transaction #{@transaction.id} created")
+    end
+  end
+
   def generate_send
     output = send_transaction
 

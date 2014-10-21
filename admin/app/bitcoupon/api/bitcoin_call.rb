@@ -2,10 +2,11 @@ module Bitcoupon
   module Api
     # Class encapsulating integration with Bitcoupon Java library
     class BitcoinCall
-      attr_accessor :command, :method
+      attr_accessor :command_1_0, :command_2_0, :method
 
       def initialize
-        @command = 'java -jar ../bitcoin/bitcoin-1.0.jar'
+        @command_1_0 = 'java -jar ../bitcoin/bitcoin-1.0.jar'
+        @command_2_0 = 'java -jar ../bitcoin/bitcoin-2.0.jar'
       end
 
       # 1.0 Library
@@ -17,7 +18,7 @@ module Bitcoupon
         key     = Shellwords.escape private_key
         history = Shellwords.escape transaction_history
 
-        `#{command} #{method} #{key} #{history}`
+        `#{command_1_0} #{method} #{key} #{history}`
       end
 
       # Name: generateCreationTransaction
@@ -25,7 +26,7 @@ module Bitcoupon
       def generate_creation_transaction(private_key)
         @method = 'generateCreationTransaction'
 
-        `#{@command} #{method} #{private_key}`
+        `#{command_1_0} #{method} #{private_key}`
       end
 
       # Name: generateSendTransaction
@@ -36,7 +37,7 @@ module Bitcoupon
         @method = 'generateSendTransaction'
         history = Shellwords.escape transaction_history
 
-        `#{command} #{method} #{private_key}\
+        `#{command_1_0} #{method} #{private_key}\
          #{creator_address} #{history} #{receiver_address}`
       end
 
@@ -46,7 +47,7 @@ module Bitcoupon
         @method = 'verifyTransaction'
         arg_one = Shellwords.escape transaction_json.chomp
         arg_two = Shellwords.escape transaction_history_json
-        output = `#{@command} #{method} #{arg_one} #{arg_two}`
+        output = `#{command_1_0} #{method} #{arg_one} #{arg_two}`
 
         if output.chomp.eql? 'true'
           true
@@ -58,6 +59,15 @@ module Bitcoupon
       # 2.0 Library
       # Name: generateCreateTransaction
       #   Arguments: String strPrivateKey, String payload
+
+      def generate_create_transaction(private_key, payload_input)
+        @method = 'generateCreateTransaction'
+        key     = Shellwords.escape private_key
+        payload = Shellwords.escape payload_input
+
+        `#{command_2_0} #{method} #{key} #{payload}`
+      end
+
       # Name: generateSendTransaction
       #   Arguments: String strPrivateKey, String couponJson,
       #              String receiverAddress, String outputHistoryJson
@@ -76,7 +86,7 @@ module Bitcoupon
       # Takes care of calling the shell
       # TODO: Do something if errors are written to.
       def open
-        cmd = "#{command} #{method} #{arg_one} #{arg_two}"
+        cmd = "#{command_1_0} #{method} #{arg_one} #{arg_two}"
         output = ''
 
         Open3.popen3(cmd) do |_stdin, stdout, stderr, wait_thr|
