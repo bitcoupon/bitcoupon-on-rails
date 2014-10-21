@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     post 'verify_transaction', to: 'transactions#verify'
     get 'transaction_history', to: 'transactions#history'
     get 'creator_addresses', to: 'transactions#creator_addresses'
+
+    get 'statistics/total', to: 'statistics#total'
   end
 
   root 'backend/transactions#history'

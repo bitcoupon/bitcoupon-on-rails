@@ -1,0 +1,20 @@
+<h1>Your Coupons in circulation</h1>
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Owner address</th>
+      <th>Payload</th>
+      <th>Cancel</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @transactions.each do |transaction| %>
+      <tr>
+        <td><%= transaction %></td>
+        <td>Lulz</td>
+        <td><%= link_to '??Cancel??', '#', class: "btn btn-danger"%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
