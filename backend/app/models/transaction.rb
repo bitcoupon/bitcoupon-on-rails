@@ -86,7 +86,7 @@ class Transaction < ActiveRecord::Base
       outputId: o.id,
       creatorAddress: o.creator_address,
       amount: o.amount,
-      address: o.address,
+      address: o.receiver_address,
       inputId: o.input_id
     }]
   end

@@ -8,8 +8,10 @@ module Bitcoupon
         @command = 'java -jar ../bitcoin/bitcoin-1.0.jar'
       end
 
+      # 1.0 Library
+
       # Name: getCreatorAddresses
-      # Argumentss: String privateKey, String transactionHistoryJson
+      # Arguments: String privateKey, String transactionHistoryJson
       def creator_addresses(private_key, transaction_history)
         @method = 'getCreatorAddresses'
         key     = Shellwords.escape private_key
@@ -18,6 +20,28 @@ module Bitcoupon
         `#{command} #{method} #{key} #{history}`
       end
 
+      # Name: generateCreationTransaction
+      # Arguments: String privateKey
+      def generate_creation_transaction(private_key)
+        @method = 'generateCreationTransaction'
+
+        `#{@command} #{method} #{private_key}`
+      end
+
+      # Name: generateSendTransaction
+      # Arguments: String privateKey, String creatorAddress,
+      #            String transactionHistoryJson, String receiverAddress
+      def generate_send_transaction(private_key, creator_address,
+                                    transaction_history, receiver_address)
+        @method = 'generateSendTransaction'
+        history = Shellwords.escape transaction_history
+
+        `#{command} #{method} #{private_key}\
+         #{creator_address} #{history} #{receiver_address}`
+      end
+
+      # Name: verifyTransaction
+      # Arguments: String transactionJson, String transactionHistoryJson
       def verify_transaction(transaction_json, transaction_history_json)
         @method = 'verifyTransaction'
         arg_one = Shellwords.escape transaction_json.chomp
@@ -30,6 +54,22 @@ module Bitcoupon
           false
         end
       end
+
+      # 2.0 Library
+      # Name: generateCreateTransaction
+      #   Arguments: String strPrivateKey, String payload
+      # Name: generateSendTransaction
+      #   Arguments: String strPrivateKey, String couponJson,
+      #              String receiverAddress, String outputHistoryJson
+      # Name: verifyTransaction
+      #   Arguments: String transactionJson, String outputHistoryJson
+      # Name: getCoupons
+      #   Arguments: String strPrivateKey, String outputHistoryJson
+      # Name: getCouponOwners
+      #   Arguments: String creatorAddress, String payload,
+      #              String outputHistoryJson
+      # Name: generatePrivateKey
+      #   Arguments: none
 
       private
 

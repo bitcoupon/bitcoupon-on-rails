@@ -15,12 +15,36 @@ class Output < ActiveRecord::Base
 
       output.creator_address = output_json['creatorAddress']
       output.amount = output_json['amount'].to_i
-      output.address = output_json['address']
+      output.receiver_address = output_json['address']
       output.input_id = 0
       # TODO: Add input when relevant
       output.save
     end
 
     output
+  end
+
+  def self.history
+    outputs = all.to_a
+
+    history = { outputList: [] }
+
+    outputs.each do |transaction|
+      history[:outputList] << output_hash(transaction)
+    end
+
+    history.to_json
+  end
+
+  def self.output_hash(o)
+    return nil if o.blank?
+    {
+      outputId: o.id,
+      creatorAddress: o.creator_address,
+      payload: 'lulz', # o.payload,
+      amount: o.amount,
+      receiverAddress: o.receiver_address,
+      referringInput: o.input_id
+    }
   end
 end
