@@ -4,6 +4,7 @@ class CreateCreations < ActiveRecord::Migration
       # id implicit
       t.references :transaction
       t.string :creator_address
+      t.text :payload
       t.integer :amount, default: 0
       t.string :signature
 

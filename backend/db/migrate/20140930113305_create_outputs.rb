@@ -3,9 +3,10 @@ class CreateOutputs < ActiveRecord::Migration
     create_table :outputs do |t|
       # id implicit
       t.references :transaction
-      t.string :coupon_type
+      t.string :creator_address
+      t.text :payload
       t.integer :amount
-      t.string :address
+      t.string :receiver_address
       t.references :input
 
       t.timestamps
