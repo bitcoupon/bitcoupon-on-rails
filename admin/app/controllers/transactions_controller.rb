@@ -19,10 +19,10 @@ class TransactionsController < ApplicationController
     request = backend_request.new :get, '/output_history'
     result = request.start
 
-    private_key = create_private_key
+    address = create_address
     output_history = JSON.parse(result.body).to_s
 
-    output = bitcoin.new.get_coupons(private_key, output_history)
+    output = bitcoin.new.get_coupons(address, output_history)
 
     @coupons = JSON.parse(output)['coupons']
   end
@@ -101,6 +101,14 @@ class TransactionsController < ApplicationController
 
     bitcoin.new.generate_send_transaction(private_key, creator_address,
                                           history, receiver_address)
+  end
+
+  def create_address
+    if current_user
+      current_user.create_address.chomp
+    else
+      '138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6'
+    end
   end
 
   def create_private_key
