@@ -19,7 +19,7 @@ class TransactionsController < ApplicationController
     request = backend_request.new :get, '/output_history'
     result = request.start
 
-    private_key = '5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'
+    private_key = create_private_key
     output_history = JSON.parse(result.body).to_s
 
     output = bitcoin.new.get_coupons(private_key, output_history)
