@@ -17,7 +17,7 @@
       <tr>
         <td><%= truncate(coupon['creatorAddress'], length: 13) %></td>
         <td><%= coupon['payload'] %></td>
-        <td><%= render 'issue_form', creator_address: coupon['creatorAddress'] %></td>
+        <td><%= render 'issue_form', creator_address: coupon['creatorAddress'], payload: coupon['payload'] %></td>
         <td><%= link_to 'Delete', '#', class: "btn btn-warning"%></td>
       </tr>
     <% end %>

@@ -79,6 +79,13 @@ class TransactionsController < ApplicationController
     @transactions = JSON.parse(result.body)
   end
 
+  def output_history
+    request = backend_request.new :get, '/output_history'
+    result = request.start
+
+    JSON.parse(result.body)
+  end
+
   def verify_transaction(output)
     request = backend_request.new :post, '/verify_transaction'
     request.content_type = 'application/json'
@@ -94,13 +101,15 @@ class TransactionsController < ApplicationController
 
     # Public key: 138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6
     creator_address = params['public_key']
-    history = transaction_history.to_s
+    payload = params['payload']
+    history = output_history.to_s
+
+    binding.pry
 
     # Receiver address: 1Kau4L6BM1h6QzLYubq1qWrQSjWdZFQgMb
     receiver_address = params['receiver_address']
-
-    bitcoin.new.generate_send_transaction(private_key, creator_address,
-                                          history, receiver_address)
+    bitcoin.new.generate_send_transaction(private_key, creator_address, payload,
+                                          receiver_address, output_history)
   end
 
   def create_address
