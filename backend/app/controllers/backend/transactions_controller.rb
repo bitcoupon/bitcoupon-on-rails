@@ -3,12 +3,13 @@ module Backend
   class TransactionsController < ApplicationController
     skip_before_filter :verify_authenticity_token, only: [:verify]
 
-    before_action :check_headers, only: [:history, :verify, :creator_addresses]
+    before_action :check_headers, only: [:history, :output_history, :verify, :creator_addresses]
 
     def verify
       transaction = transaction_params
 
-      result = bitcoin.new.verify_transaction(transaction, Transaction.history)
+      result = bitcoin.new.verify_transaction(transaction, Output.history)
+
       transaction = Transaction.from_json(transaction)
 
       if result && transaction.save
@@ -21,6 +22,10 @@ module Backend
 
     def history
       render json: Transaction.history
+    end
+
+    def output_history
+      render json: Output.history
     end
 
     # TODO: Marked for deletion, or used by app?

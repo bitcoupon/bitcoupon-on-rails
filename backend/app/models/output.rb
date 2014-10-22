@@ -14,10 +14,11 @@ class Output < ActiveRecord::Base
       # TODO: Make loop
 
       output.creator_address = output_json['creatorAddress']
+      output.payload = output_json['payload']
       output.amount = output_json['amount'].to_i
-      output.receiver_address = output_json['address']
-      output.input_id = 0
-      # TODO: Add input when relevant
+      output.receiver_address = output_json['receiverAddress']
+      output.input_id = output_json['referringInput'].to_i
+
       output.save
     end
 
@@ -41,7 +42,7 @@ class Output < ActiveRecord::Base
     {
       outputId: o.id,
       creatorAddress: o.creator_address,
-      payload: 'lulz', # o.payload,
+      payload: o.payload,
       amount: o.amount,
       receiverAddress: o.receiver_address,
       referringInput: o.input_id

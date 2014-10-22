@@ -9,10 +9,10 @@
   </thead>
 
   <tbody>
-    <% @transactions.each do |transaction| %>
+    <% @coupons.each do |coupon| %>
       <tr>
-        <td><%= transaction %></td>
-        <td>Lulz</td>
+        <td><%= coupon['creatorAddress'] %></td>
+        <td><%= coupon['payload'] %></td>
         <td><%= link_to 'Delete', '#', class: "btn btn-warning"%></td>
       </tr>
     <% end %>

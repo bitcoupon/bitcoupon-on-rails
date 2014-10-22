@@ -14,6 +14,7 @@ class Creation < ActiveRecord::Base
       # TODO: Make loop
 
       creation.creator_address = creation_json['creatorAddress']
+      creation.payload = creation_json['payload']
       creation.amount = creation_json['amount'].to_i
       creation.signature = creation_json['signature']
       creation.save

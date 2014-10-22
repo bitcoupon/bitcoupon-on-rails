@@ -3,7 +3,7 @@ require_dependency '../bitcoupon/api/bitcoin_call'
 
 # TransactionsController
 class TransactionsController < ApplicationController
-  def index
+  def index_1_0
     request = backend_request.new :get, '/transaction_history'
     result = request.start
 
@@ -13,6 +13,18 @@ class TransactionsController < ApplicationController
     output = bitcoin.new.creator_addresses(private_key, transaction_history)
 
     @transactions = output.split("\n")
+  end
+
+  def index
+    request = backend_request.new :get, '/output_history'
+    result = request.start
+
+    private_key = '5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'
+    output_history = JSON.parse(result.body).to_s
+
+    output = bitcoin.new.get_coupons(private_key, output_history)
+
+    @coupons = JSON.parse(output)['coupons']
   end
 
   def generate_creation
@@ -31,7 +43,7 @@ class TransactionsController < ApplicationController
 
   def generate_create
     private_key = '5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'
-    payload     = 'Lulz'
+    payload     = params[:payload]
 
     output = bitcoin.new.generate_create_transaction(private_key, payload)
 

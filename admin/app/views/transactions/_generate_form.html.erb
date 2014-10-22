@@ -1,7 +1,9 @@
 <h2>Generate new coupon</h2>
-<%= link_to 'Generate coupon', generate_create_transaction_path, method: :post, class: "btn btn-success" %>
-<br>
-<br>
-<p>
-<textarea rows="4" cols="30" placeholder="Payload"></textarea>
-</p>
+<%= form_tag(generate_create_transaction_path, role: 'form') do %>
+  <div class="form-group">
+    <label for="payload">Payload</label>
+    <%= text_area_tag 'payload', '', class: 'form-control' %>
+    <p class="help-block">Enter the payload for the coupon, and click the generate button.</p>
+  </div>
+  <%= submit_tag 'Generate coupon', class: "btn btn-success" %>
+<% end %>

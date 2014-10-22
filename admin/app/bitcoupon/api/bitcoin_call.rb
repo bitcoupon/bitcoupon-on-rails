@@ -43,7 +43,7 @@ module Bitcoupon
 
       # Name: verifyTransaction
       # Arguments: String transactionJson, String transactionHistoryJson
-      def verify_transaction(transaction_json, transaction_history_json)
+      def verify_transaction_1_0(transaction_json, transaction_history_json)
         @method = 'verifyTransaction'
         arg_one = Shellwords.escape transaction_json.chomp
         arg_two = Shellwords.escape transaction_history_json
@@ -73,13 +73,42 @@ module Bitcoupon
       #              String receiverAddress, String outputHistoryJson
       # Name: verifyTransaction
       #   Arguments: String transactionJson, String outputHistoryJson
+
+      def verify_transaction(transaction_json, output_history_json)
+        @method = 'verifyTransaction'
+        arg_one = Shellwords.escape transaction_json.chomp
+        arg_two = Shellwords.escape output_history_json
+
+        output = `#{command_2_0} #{method} #{arg_one} #{arg_two}`
+
+        if output.chomp.eql? 'true'
+          true
+        else
+          false
+        end
+      end
+
       # Name: getCoupons
       #   Arguments: String strPrivateKey, String outputHistoryJson
+
+      def get_coupons(private_key, output_history_json)
+        @method = 'getCoupons'
+        key     = Shellwords.escape private_key
+        history = Shellwords.escape output_history_json
+
+        `#{command_2_0} #{method} #{key} #{history}`
+      end
+
       # Name: getCouponOwners
       #   Arguments: String creatorAddress, String payload,
       #              String outputHistoryJson
       # Name: generatePrivateKey
       #   Arguments: none
+
+      def generate_private_key
+        @method = 'generatePrivateKey'
+        `#{command_2_0} #{method}`
+      end
 
       private
 

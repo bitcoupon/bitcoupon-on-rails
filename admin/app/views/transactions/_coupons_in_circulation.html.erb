@@ -1,4 +1,4 @@
-<h1>Your Coupons in circulation</h1>
+<h2>Your Coupons in circulation</h2>
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
@@ -9,10 +9,10 @@
   </thead>
 
   <tbody>
-    <% @transactions.each do |transaction| %>
+    <% @coupons.each do |coupon| %>
       <tr>
-        <td><%= transaction %></td>
-        <td>Lulz</td>
+        <td><%= coupon['creatorAddress'] %></td>
+        <td><%= coupon['payload'] %></td>
         <td><%= link_to '??Cancel??', '#', class: "btn btn-danger"%></td>
       </tr>
     <% end %>

@@ -27,6 +27,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
+    @user.generate_keys
+
     if @user.save
       redirect_to @user, notice: 'User was successfully created.'
     else
