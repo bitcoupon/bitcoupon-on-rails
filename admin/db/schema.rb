@@ -16,6 +16,10 @@ ActiveRecord::Schema.define(version: 20140902112919) do
   create_table "users", force: true do |t|
     t.string   "email"
     t.string   "password_digest"
+    t.string   "create_private_key"
+    t.string   "create_address"
+    t.string   "return_private_key"
+    t.string   "return_address"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

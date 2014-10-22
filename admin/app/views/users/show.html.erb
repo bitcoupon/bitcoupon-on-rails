@@ -11,6 +11,16 @@
     <%= @user.password_digest %>
   </p>
 
+  <p>
+    <strong>Create address:</strong>
+    <%= @user.create_address %>
+  </p>
+
+  <p>
+    <strong>Return address:</strong>
+    <%= @user.return_address %>
+  </p>
+
   <%= link_to 'Edit', edit_user_path(@user), class: "btn btn-warning col-md-2" %>
   <%= link_to 'Back', users_path, class: "btn btn-info col-md-2" %>
 </div>

@@ -102,12 +102,24 @@ module Bitcoupon
       # Name: getCouponOwners
       #   Arguments: String creatorAddress, String payload,
       #              String outputHistoryJson
+
+      def get_coupon_owners
+      end
+
       # Name: generatePrivateKey
       #   Arguments: none
 
       def generate_private_key
         @method = 'generatePrivateKey'
         `#{command_2_0} #{method}`
+      end
+
+      # Name: generateAddress
+      #   Arguments: String strPrivateKey
+
+      def generate_address(private_key)
+        @method = 'generateAddress'
+        `#{command_2_0} #{method} #{private_key}`
       end
 
       private

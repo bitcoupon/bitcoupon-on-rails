@@ -42,7 +42,7 @@ class TransactionsController < ApplicationController
   end
 
   def generate_create
-    private_key = '5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'
+    private_key = create_private_key
     payload     = params[:payload]
 
     output = bitcoin.new.generate_create_transaction(private_key, payload)
@@ -101,5 +101,13 @@ class TransactionsController < ApplicationController
 
     bitcoin.new.generate_send_transaction(private_key, creator_address,
                                           history, receiver_address)
+  end
+
+  def create_private_key
+    if current_user
+      current_user.create_private_key
+    else
+      '5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'
+    end
   end
 end

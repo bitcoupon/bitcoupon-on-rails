@@ -12,7 +12,16 @@ class User < ActiveRecord::Base
   end
 
   def generate_keys
-    create_private_key = bitcoin.new.generate_private_key
-    return_private_key = bitcoin.new.generate_private_key
+    self.create_private_key = bitcoin.new.generate_private_key.chomp
+    self.return_private_key = bitcoin.new.generate_private_key.chomp
+
+    self.create_address = bitcoin.new.generate_address create_private_key.chomp
+    self.return_address = bitcoin.new.generate_address return_private_key.chomp
+  end
+
+  private
+
+  def bitcoin
+    Bitcoupon::Api::BitcoinCall
   end
 end
