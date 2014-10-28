@@ -7,21 +7,19 @@ class Output < ActiveRecord::Base
 
   def self.from_json(output_json)
     output = Output.new
+    return output if output_json.blank?
 
-    unless output_json.blank?
-      # Only one creation for now
-      output_json = output_json.first
-      # TODO: Make loop
+    # Only one creation for now
+    output_json = output_json.first
+    # TODO: Make loop
 
-      output.creator_address = output_json['creatorAddress']
-      output.payload = output_json['payload']
-      output.amount = output_json['amount'].to_i
-      output.receiver_address = output_json['receiverAddress']
-      output.input_id = output_json['referringInput'].to_i
+    output.creator_address = output_json['creatorAddress']
+    output.payload = output_json['payload']
+    output.amount = output_json['amount'].to_i
+    output.receiver_address = output_json['receiverAddress']
+    output.input_id = output_json['referringInput'].to_i
 
-      output.save
-    end
-
+    output.save
     output
   end
 

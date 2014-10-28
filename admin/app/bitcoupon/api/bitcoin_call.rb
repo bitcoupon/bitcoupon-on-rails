@@ -75,10 +75,11 @@ module Bitcoupon
       def generate_send_transaction(private_key, creator_address, payload,
                                     receiver_address, output_history)
         @method = 'generateSendTransaction'
+        payload = Shellwords.escape payload
         history = Shellwords.escape output_history
 
-        `#{command_2_0} #{method} #{private_key}\
-         #{creator_address} #{payload} #{receiver_address} #{history}`
+        `#{command_2_0} #{method} #{private_key} \
+#{creator_address} #{payload} #{receiver_address} #{history}`
       end
 
       # Name: verifyTransaction
@@ -103,17 +104,24 @@ module Bitcoupon
 
       def get_coupons(address, output_history_json)
         @method = 'getCoupons'
-        key     = Shellwords.escape address
+        address     = Shellwords.escape address
         history = Shellwords.escape output_history_json
 
-        `#{command_2_0} #{method} #{key} #{history}`
+        `#{command_2_0} #{method} #{address} #{history}`
       end
 
       # Name: getCouponOwners
       #   Arguments: String creatorAddress, String payload,
       #              String outputHistoryJson
 
-      def get_coupon_owners
+      #   Arguments: String creatorAddress, String outputHistoryJson
+
+      def get_coupon_owners(address, output_history_json)
+        @method = 'getCouponOwners'
+        address     = Shellwords.escape address
+        history = Shellwords.escape output_history_json
+
+        `#{command_2_0} #{method} #{address} #{history}`
       end
 
       # Name: generatePrivateKey

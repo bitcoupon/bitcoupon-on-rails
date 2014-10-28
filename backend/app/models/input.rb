@@ -11,7 +11,7 @@ class Input < ActiveRecord::Base
     unless input_json.blank?
       input_json = input_json.first
 
-      input.output_id = input_json['outputId'].to_i
+      input.output_id = input_json['referredOutput'].to_i
       input.signature = input_json['signature']
       input.save
 

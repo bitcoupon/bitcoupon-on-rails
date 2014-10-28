@@ -5,6 +5,8 @@ class UsersControllerTest < ActionController::TestCase
   setup do
     @user = users(:one)
     @user.password = 'Ad38923912dfsS'
+    @user.save
+    session[:user_id] = @user.id
   end
 
   test 'should get index' do

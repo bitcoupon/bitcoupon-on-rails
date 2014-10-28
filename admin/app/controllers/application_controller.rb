@@ -15,18 +15,15 @@ class ApplicationController < ActionController::Base
   private
 
   def require_signin!
-    if current_user.nil?
-      flash[:notice] = "You have to be logged in to access this page"
-      redirect_to root_path
-    end
+    return if current_user
+    redirect_to(root_path,
+                alert: 'You have to be logged in to access this page.')
   end
 
   helper_method :require_signin!
 
   def current_user
-    if(User.where(id: session[:user_id]).empty?)
-      session[:user_id] = nil
-    end
+    session[:user_id] = nil if User.where(id: session[:user_id]).empty?
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
 

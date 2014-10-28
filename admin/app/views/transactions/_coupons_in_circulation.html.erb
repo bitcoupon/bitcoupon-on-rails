@@ -2,17 +2,19 @@
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
-      <th>Owner address</th>
+      <th>Creator address</th>
       <th>Payload</th>
+      <th>Owner address</th>
       <th>Cancel</th>
     </tr>
   </thead>
 
   <tbody>
-    <% @coupons.each do |coupon| %>
+    <% @coupons_circulating.each do |coupon| %>
       <tr>
-        <td><%= coupon['creatorAddress'] %></td>
-        <td><%= coupon['payload'] %></td>
+        <td><%= coupon['coupon']['creatorAddress'] %></td>
+        <td><%= coupon['coupon']['payload'] %></td>
+        <td><%= coupon['ownerAddress'] %></td>
         <td><%= link_to '??Cancel??', '#', class: "btn btn-danger"%></td>
       </tr>
     <% end %>
