@@ -28,10 +28,10 @@ module Backend
     end
 
     def output_history
-      request = params['output_history_request']
-      address = JSON.parse(request)['address']
+      history_request = set_history_request
+      address = JSON.parse(history_request)['address']
 
-      result = bitcoin.new.verify_output_history_request(request)
+      result = bitcoin.new.verify_output_history_request(history_request)
 
       if result
         render json: Output.history(address)
@@ -60,6 +60,14 @@ module Backend
       end
 
       transaction
+    end
+
+    def set_history_request
+      if params['output_history_request']
+        params['output_history_request']
+      else
+        JSON.parse(request.body.string)['output_history_request'].to_json
+      end
     end
 
     def check_headers
