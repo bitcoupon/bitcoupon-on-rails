@@ -36,16 +36,32 @@ class TransactionsController < ApplicationController
     end
   end
 
+  def generate_delete
+    output = delete_transaction
+
+    if output.blank?
+      render text: 'Something went wrong'
+    else
+      id = verify_transaction output
+      redirect_to(root_path,
+                  notice: "Transaction #{id} has been "\
+                          'created, deleting the coupon')
+    end
+  end
+
   private
 
   def set_coupons
-    output = bitcoin.new.get_coupons(create_address, output_history)
+    output = bitcoin.new
+               .get_coupons(create_address, output_history(create_private_key))
     @coupons = JSON.parse(output)['coupons']
 
-    output = bitcoin.new.get_coupons(return_address, output_history)
+    output = bitcoin.new
+               .get_coupons(return_address, output_history(return_private_key))
     @coupons_returned = JSON.parse(output)['coupons']
 
-    output = bitcoin.new.get_coupon_owners(create_address, output_history)
+    output = bitcoin.new.get_coupon_owners(
+              create_address, output_history(create_private_key))
     @coupons_circulating = JSON.parse(output)['couponOwners']
 
     reject_if_current_user
@@ -75,8 +91,14 @@ class TransactionsController < ApplicationController
     @transactions = JSON.parse(result.body)
   end
 
-  def output_history
-    request = backend_request.new :get, '/output_history'
+  def output_history(private_key)
+    output_history_request = bitcoin
+                               .new
+                               .generate_output_history_request(private_key)
+
+    request = backend_request.new :post, '/output_history'
+    request.content_type = 'application/json'
+    request.body = { output_history_request: output_history_request }.to_json
     result = request.start
 
     JSON.parse(result.body)
@@ -101,31 +123,23 @@ class TransactionsController < ApplicationController
 
     # Receiver address: 1Kau4L6BM1h6QzLYubq1qWrQSjWdZFQgMb
     receiver_address = params['receiver_address']
-    bitcoin.new.generate_send_transaction(private_key, creator_address, payload,
-                                          receiver_address, output_history)
+    bitcoin.new.generate_send_transaction(
+                  private_key, creator_address, payload,
+                  receiver_address, output_history(create_private_key))
   end
 
-  def create_address
-    if current_user
-      current_user.create_address.chomp
+  def delete_transaction
+    if params['priv_key'].eql?('create')
+      private_key = create_private_key
     else
-      '138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6'
+      private_key = return_private_key
     end
-  end
 
-  def return_address
-    if current_user
-      current_user.return_address.chomp
-    else
-      '138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6'
-    end
-  end
+    creator_address = params['public_key']
+    payload = params['payload']
 
-  def create_private_key
-    if current_user
-      current_user.create_private_key.chomp
-    else
-      '5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'
-    end
+    bitcoin.new.generate_delete_transaction(
+                  private_key, creator_address, payload,
+                  output_history(private_key))
   end
 end

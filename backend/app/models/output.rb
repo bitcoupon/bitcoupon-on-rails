@@ -23,9 +23,20 @@ class Output < ActiveRecord::Base
     output
   end
 
-  def self.history
-    outputs = all.to_a
+  def self.all_history
+    outputs = where(input_id: 0).to_a
 
+    history_from_outputs(outputs)
+  end
+
+  def self.history(address)
+    outputs = where('creator_address = ? or receiver_address = ?',
+                    address, address).where(input_id: 0).to_a
+
+    history_from_outputs(outputs)
+  end
+
+  def self.history_from_outputs(outputs)
     history = { outputList: [] }
 
     outputs.each do |transaction|

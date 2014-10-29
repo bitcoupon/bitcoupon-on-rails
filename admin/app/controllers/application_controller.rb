@@ -12,6 +12,38 @@ class ApplicationController < ActionController::Base
     Bitcoupon::Api::BitcoinCall
   end
 
+  def create_address
+    if current_user
+      current_user.create_address.chomp
+    else
+      '138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6'
+    end
+  end
+
+  def return_address
+    if current_user
+      current_user.return_address.chomp
+    else
+      '138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6'
+    end
+  end
+
+  def create_private_key
+    if current_user
+      current_user.create_private_key.chomp
+    else
+      '5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'
+    end
+  end
+
+  def return_private_key
+    if current_user
+      current_user.return_private_key.chomp
+    else
+      '5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'
+    end
+  end
+
   private
 
   def require_signin!

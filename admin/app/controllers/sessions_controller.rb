@@ -9,8 +9,7 @@ class SessionsController < ApplicationController
 
       redirect_to user_path(user)
     else
-      @wrong_password = true
-      render :new
+      redirect_to root_path(alert: 'Wrong password')
     end
   end
 

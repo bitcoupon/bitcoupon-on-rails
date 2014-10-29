@@ -69,8 +69,9 @@ module Bitcoupon
       end
 
       # Name: generateSendTransaction
-      #   Arguments: String strPrivateKey, String couponJson,
-      #              String receiverAddress, String outputHistoryJson
+      #   Arguments: String strPrivateKey, String creatorAddress,
+      #              String payload, String receiverAddress,
+      #              String outputHistoryJson
 
       def generate_send_transaction(private_key, creator_address, payload,
                                     receiver_address, output_history)
@@ -82,6 +83,20 @@ module Bitcoupon
 #{creator_address} #{payload} #{receiver_address} #{history}`
       end
 
+      # Name: generateDeleteTransaction
+      #   Arguments: String strPrivateKey, String creatorAddress,
+      #              String payload, String outputHistoryJson
+
+      def generate_delete_transaction(private_key, creator_address, payload,
+                                      output_history)
+        @method = 'generateDeleteTransaction'
+        payload = Shellwords.escape payload
+        history = Shellwords.escape output_history
+
+        `#{command_2_0} #{method} #{private_key} \
+#{creator_address} #{payload} #{history}`
+      end
+
       # Name: verifyTransaction
       #   Arguments: String transactionJson, String outputHistoryJson
 
@@ -91,6 +106,31 @@ module Bitcoupon
         arg_two = Shellwords.escape output_history_json
 
         output = `#{command_2_0} #{method} #{arg_one} #{arg_two}`
+
+        if output.chomp.eql? 'true'
+          true
+        else
+          false
+        end
+      end
+
+      # Name: generateOutputHistoryRequest
+      #   Arguments: String strPrivateKey
+
+      def generate_output_history_request(private_key)
+        @method = 'generateOutputHistoryRequest'
+
+        `#{command_2_0} #{method} #{private_key}`
+      end
+
+      # Name: verifyOutputHistoryRequest
+      #   Arguments: String outputHistoryRequestJson
+
+      def verify_output_history_request(output_history_request)
+        @method = 'verifyOutputHistoryRequest'
+        request = Shellwords.escape output_history_request
+
+        output = `#{command_2_0} #{method} #{request}`
 
         if output.chomp.eql? 'true'
           true
@@ -111,9 +151,6 @@ module Bitcoupon
       end
 
       # Name: getCouponOwners
-      #   Arguments: String creatorAddress, String payload,
-      #              String outputHistoryJson
-
       #   Arguments: String creatorAddress, String outputHistoryJson
 
       def get_coupon_owners(address, output_history_json)

@@ -32,7 +32,7 @@ module Bitcoupon
       # Name: generateSendTransaction
       # Arguments: String privateKey, String creatorAddress,
       #            String transactionHistoryJson, String receiverAddress
-      def generate_send_transaction(private_key, creator_address,
+      def generate_send_transaction_1_0(private_key, creator_address,
                                     transaction_history, receiver_address)
         @method = 'generateSendTransaction'
         history = Shellwords.escape transaction_history
@@ -69,8 +69,34 @@ module Bitcoupon
       end
 
       # Name: generateSendTransaction
-      #   Arguments: String strPrivateKey, String couponJson,
-      #              String receiverAddress, String outputHistoryJson
+      #   Arguments: String strPrivateKey, String creatorAddress,
+      #              String payload, String receiverAddress,
+      #              String outputHistoryJson
+
+      def generate_send_transaction(private_key, creator_address, payload,
+                                    receiver_address, output_history)
+        @method = 'generateSendTransaction'
+        payload = Shellwords.escape payload
+        history = Shellwords.escape output_history
+
+        `#{command_2_0} #{method} #{private_key} \
+#{creator_address} #{payload} #{receiver_address} #{history}`
+      end
+
+      # Name: generateDeleteTransaction
+      #   Arguments: String strPrivateKey, String creatorAddress,
+      #              String payload, String outputHistoryJson
+
+      def generate_delete_transaction(private_key, creator_address, payload,
+                                      output_history)
+        @method = 'generateDeleteTransaction'
+        payload = Shellwords.escape payload
+        history = Shellwords.escape output_history
+
+        `#{command_2_0} #{method} #{private_key} \
+#{creator_address} #{payload} #{history}`
+      end
+
       # Name: verifyTransaction
       #   Arguments: String transactionJson, String outputHistoryJson
 
@@ -88,13 +114,68 @@ module Bitcoupon
         end
       end
 
+      # Name: generateOutputHistoryRequest
+      #   Arguments: String strPrivateKey
+
+      def generate_output_history_request(private_key)
+        @method = 'generateOutputHistoryRequest'
+
+        `#{command_2_0} #{method} #{private_key}`
+      end
+
+      # Name: verifyOutputHistoryRequest
+      #   Arguments: String outputHistoryRequestJson
+
+      def verify_output_history_request(output_history_request)
+        @method = 'verifyOutputHistoryRequest'
+        request = Shellwords.escape output_history_request
+
+        output = `#{command_2_0} #{method} #{request}`
+
+        if output.chomp.eql? 'true'
+          true
+        else
+          false
+        end
+      end
+
       # Name: getCoupons
-      #   Arguments: String strPrivateKey, String outputHistoryJson
+      #   Arguments: String address, String outputHistoryJson
+
+      def get_coupons(address, output_history_json)
+        @method = 'getCoupons'
+        address     = Shellwords.escape address
+        history = Shellwords.escape output_history_json
+
+        `#{command_2_0} #{method} #{address} #{history}`
+      end
+
       # Name: getCouponOwners
-      #   Arguments: String creatorAddress, String payload,
-      #              String outputHistoryJson
+      #   Arguments: String creatorAddress, String outputHistoryJson
+
+      def get_coupon_owners(address, output_history_json)
+        @method = 'getCouponOwners'
+        address     = Shellwords.escape address
+        history = Shellwords.escape output_history_json
+
+        `#{command_2_0} #{method} #{address} #{history}`
+      end
+
       # Name: generatePrivateKey
       #   Arguments: none
+
+      def generate_private_key
+        @method = 'generatePrivateKey'
+        `#{command_2_0} #{method}`
+      end
+
+      # Name: generateAddress
+      #   Arguments: String strPrivateKey
+
+      def generate_address(private_key)
+        @method = 'generateAddress'
+        `#{command_2_0} #{method} #{private_key}`
+      end
 
       private
 

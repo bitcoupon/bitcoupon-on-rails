@@ -13,7 +13,7 @@
       <tr>
         <td><%= coupon['creatorAddress'] %></td>
         <td><%= coupon['payload'] %></td>
-        <td><%= link_to 'Delete', '#', class: "btn btn-warning"%></td>
+        <td><%= render 'delete_form', creator_address: coupon['creatorAddress'], payload: coupon['payload'], private_key: 'return' %></td>
       </tr>
     <% end %>
   </tbody>

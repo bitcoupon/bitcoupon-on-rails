@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
     post 'verify_transaction', to: 'transactions#verify'
     get 'transaction_history', to: 'transactions#history'
-    get 'output_history', to: 'transactions#output_history'
+    post 'output_history', to: 'transactions#output_history'
     get 'creator_addresses', to: 'transactions#creator_addresses'
 
     get 'statistics/total', to: 'statistics#total'

@@ -1,0 +1,6 @@
+<%= form_tag("/generate_delete_transaction") do %>
+  <%= text_field_tag 'public_key', creator_address, hidden: true %>
+  <%= text_field_tag 'payload', payload, hidden: true %>
+  <%= text_field_tag 'priv_key', private_key, hidden: true %>
+  <%= submit_tag 'Delete', class: "btn btn-warning" %>
+<% end %>

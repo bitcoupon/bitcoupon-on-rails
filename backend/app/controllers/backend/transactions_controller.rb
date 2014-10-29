@@ -1,7 +1,8 @@
 module Backend
   # TransactionsController
   class TransactionsController < ApplicationController
-    skip_before_filter :verify_authenticity_token, only: [:verify]
+    skip_before_filter(:verify_authenticity_token,
+                       only: [:verify, :output_history])
 
     before_action(:check_headers,
                   only: [:history, :output_history,
@@ -10,7 +11,7 @@ module Backend
     def verify
       transaction = transaction_params
 
-      result = bitcoin.new.verify_transaction(transaction, Output.history)
+      result = bitcoin.new.verify_transaction(transaction, Output.all_history)
 
       transaction = Transaction.from_json(transaction)
 
@@ -27,7 +28,16 @@ module Backend
     end
 
     def output_history
-      render json: Output.history
+      request = params['output_history_request']
+      address = JSON.parse(request)['address']
+
+      result = bitcoin.new.verify_output_history_request(request)
+
+      if result
+        render json: Output.history(address)
+      else
+        render json: '{"error":"INVALID OUTPUT HISTORY REQUEST"}', status: 401
+      end
     end
 
     # TODO: Marked for deletion, or used by app?
