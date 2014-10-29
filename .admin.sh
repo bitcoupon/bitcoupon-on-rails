@@ -1,6 +1,7 @@
 #!/bin/bash
 cd admin
 bundle install
-rake db:migrate
+RAILS_ENV=production rake db:migrate
+RAILS_ENV=production bin/rake assets:precompile
 echo -e "\n\nSTARTING BITCOUPON ADMIN\n\n"
-rails server --port=3001
+rails server --port=3001 --environment=production
