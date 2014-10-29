@@ -7,4 +7,20 @@ class ApplicationController < ActionController::Base
   def bitcoin
     Bitcoupon::Api::BitcoinCall
   end
+
+  private
+
+  def check_headers
+    if token.blank?
+      render json: '{"error":"No token given"}'
+      return
+    end
+    response.headers['token'] = token
+  end
+
+  def token
+    token = request.headers['token']
+    token = params[:token] if token.nil? && params[:token]
+    token
+  end
 end

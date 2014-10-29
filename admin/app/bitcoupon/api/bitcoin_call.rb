@@ -176,24 +176,6 @@ module Bitcoupon
         @method = 'generateAddress'
         `#{command_2_0} #{method} #{private_key}`
       end
-
-      private
-
-      # Takes care of calling the shell
-      # TODO: Do something if errors are written to.
-      def open
-        cmd = "#{command_1_0} #{method} #{arg_one} #{arg_two}"
-        output = ''
-
-        Open3.popen3(cmd) do |_stdin, stdout, stderr, wait_thr|
-          _pid = wait_thr.pid # pid of the started process.
-          output = stdout.read
-          _errors = stderr.read
-          _exit_status = wait_thr.value # Process::Status object returned.
-        end
-
-        output
-      end
     end
   end
 end

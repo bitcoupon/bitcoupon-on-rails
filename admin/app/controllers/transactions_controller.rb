@@ -2,6 +2,7 @@ require_dependency '../bitcoupon/api/backend_request'
 require_dependency '../bitcoupon/api/bitcoin_call'
 
 # TransactionsController
+# rubocop:disable Metrics/ClassLength
 class TransactionsController < ApplicationController
   def index
     set_coupons
@@ -143,3 +144,4 @@ class TransactionsController < ApplicationController
                   output_history(private_key))
   end
 end
+# rubocop:enable Metrics/ClassLength
