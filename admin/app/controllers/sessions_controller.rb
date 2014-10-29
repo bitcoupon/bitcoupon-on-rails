@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
 
       redirect_to user_path(user)
     else
-      redirect_to root_path(alert: 'Wrong password')
+      redirect_to root_path, alert: 'Wrong password'
     end
   end
 
