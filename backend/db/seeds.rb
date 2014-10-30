@@ -6,5 +6,8 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-Coupon.create(title: 'lkjdsf3290sdklf', description: 'dummy description')
-Coupon.create(title: 'Dummy coupon', description: 'dummy description')
+File.open('public/words.txt', 'r') do |f|
+  while (line = f.gets)
+    Word.create(word: line)
+  end
+end
