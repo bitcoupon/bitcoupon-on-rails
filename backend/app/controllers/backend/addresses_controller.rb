@@ -18,7 +18,7 @@ module Backend
     end
 
     def word
-      word = Word.where(word: params[:word].chomp)
+      word = Word.where(word: params[:word].chomp).first
       address = Address.where(word: word.word.chomp)
 
       if address.any?
