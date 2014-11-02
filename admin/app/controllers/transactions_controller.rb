@@ -33,7 +33,7 @@ class TransactionsController < ApplicationController
       id = verify_transaction output
       redirect_to(root_path,
                   notice: "Transaction #{id} has been "\
-                           "sent to #{params['receiver_address']}")
+                          "sent to #{params['receiver_address']}")
     end
   end
 
@@ -93,16 +93,22 @@ class TransactionsController < ApplicationController
   end
 
   def output_history(private_key)
-    output_history_request = bitcoin
-                               .new
-                               .generate_output_history_request(private_key)
-
     request = backend_request.new :post, '/output_history'
     request.content_type = 'application/json'
-    request.body = { output_history_request: output_history_request }.to_json
+    request.body = {
+      output_history_request: output_history_request(private_key)
+    }.to_json
     result = request.start
 
     JSON.parse(result.body)
+  end
+
+  def output_history_request(private_key)
+    if current_user
+      current_user.output_history_request(private_key)
+    else
+      bitcoin.new.generate_output_history_request(private_key)
+    end
   end
 
   def verify_transaction(output)
@@ -123,7 +129,7 @@ class TransactionsController < ApplicationController
     payload = params['payload']
 
     # Receiver address: 1Kau4L6BM1h6QzLYubq1qWrQSjWdZFQgMb
-    receiver_address = params['receiver_address']
+    receiver_address = translate_word params['receiver_address']
     bitcoin.new.generate_send_transaction(
                   private_key, creator_address, payload,
                   receiver_address, output_history(create_private_key))

@@ -11,7 +11,7 @@
   <tbody>
     <% @coupons_returned.each do |coupon| %>
       <tr>
-        <td><%= coupon['creatorAddress'] %></td>
+        <td><%= translate_address coupon['creatorAddress'] %></td>
         <td><%= coupon['payload'] %></td>
         <td><%= render 'delete_form', creator_address: coupon['creatorAddress'], payload: coupon['payload'], private_key: 'return' %></td>
       </tr>

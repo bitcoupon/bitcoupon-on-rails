@@ -11,9 +11,9 @@
   <tbody>
     <% @coupons_circulating.each do |coupon| %>
       <tr>
-        <td><%= coupon['coupon']['creatorAddress'] %></td>
+        <td><%= translate_address coupon['coupon']['creatorAddress'] %></td>
         <td><%= coupon['coupon']['payload'] %></td>
-        <td><%= coupon['ownerAddress'] %></td>
+        <td><%= translate_address coupon['ownerAddress'] %></td>
       </tr>
     <% end %>
   </tbody>

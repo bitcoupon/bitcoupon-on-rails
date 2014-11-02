@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     get 'creator_addresses', to: 'transactions#creator_addresses'
 
     get 'statistics/total', to: 'statistics#total'
+    post 'address', to: 'addresses#address'
+    post 'word', to: 'addresses#word'
   end
 
   root 'backend/transactions#history'

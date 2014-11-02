@@ -11,7 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140930113305) do
+ActiveRecord::Schema.define(version: 20141030134439) do
+
+  create_table "addresses", force: true do |t|
+    t.integer "word_id"
+    t.string  "address"
+  end
 
   create_table "coupons", force: true do |t|
     t.string   "title"
@@ -53,6 +58,10 @@ ActiveRecord::Schema.define(version: 20140930113305) do
   create_table "transactions", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "words", force: true do |t|
+    t.string "word"
   end
 
 end
