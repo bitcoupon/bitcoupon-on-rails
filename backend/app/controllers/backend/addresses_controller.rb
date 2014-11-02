@@ -22,7 +22,7 @@ module Backend
       address = Address.where(word_id: word.id)
 
       if address.any?
-        render json: { address: address.address.chomp }
+        render json: { address: address.first.address.chomp }
       else
         render json: { error: 'word not found' }, status: 404
       end
