@@ -46,9 +46,9 @@ class ApplicationController < ActionController::Base
 
   # rubocop:disable Metrics/MethodLength
   def translate_word(word)
-    address_cache = Address.where(word: word).first
+    address_cache = Address.where(word: word)
     if address_cache.any?
-      address_cache.address.chomp
+      address_cache.first.address.chomp
     else
       request = backend_request.new :post, '/word'
       request.content_type = 'application/json'
