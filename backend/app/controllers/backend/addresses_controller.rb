@@ -19,7 +19,7 @@ module Backend
 
     def word
       word = Word.where(word: params[:word].chomp).first
-      address = Address.where(word: word.word.chomp)
+      address = Address.where(word_id: word.id)
 
       if address.any?
         render json: { address: address.address.chomp }
