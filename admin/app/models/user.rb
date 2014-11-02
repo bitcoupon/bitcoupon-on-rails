@@ -19,6 +19,16 @@ class User < ActiveRecord::Base
     self.return_address = bitcoin.new.generate_address return_private_key.chomp
   end
 
+  def output_history_request(private_key)
+    if self[:output_history_request].blank?
+      self[:output_history_request] = bitcoin.new
+                                        .generate_output_history_request(
+                                          private_key)
+    else
+      self[:output_history_request]
+    end
+  end
+
   private
 
   def bitcoin

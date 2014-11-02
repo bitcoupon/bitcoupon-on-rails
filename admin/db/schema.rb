@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140902112919) do
+ActiveRecord::Schema.define(version: 20141102124149) do
+
+  create_table "addresses", force: true do |t|
+    t.string   "address"
+    t.string   "word"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email"
@@ -22,6 +29,7 @@ ActiveRecord::Schema.define(version: 20140902112919) do
     t.string   "return_address"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "output_history_request"
   end
 
 end

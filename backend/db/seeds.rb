@@ -6,8 +6,12 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+words = []
+
 File.open('public/words.txt', 'r') do |f|
   while (line = f.gets)
-    Word.create(word: line)
+    words << { word: line.chomp }
   end
 end
+
+Word.create(words.shuffle)

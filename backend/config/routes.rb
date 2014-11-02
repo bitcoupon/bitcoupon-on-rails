@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
     get 'statistics/total', to: 'statistics#total'
     post 'address', to: 'addresses#address'
+    post 'word', to: 'addresses#word'
   end
 
   root 'backend/transactions#history'

@@ -44,6 +44,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def translate_word(word)
+    Address.where(word: word).first.address.chomp
+  end
+
   private
 
   def require_signin!
