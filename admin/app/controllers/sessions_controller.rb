@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
 
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
-      flash[:notice] = 'Welcome to Bitcoupon Admin'
+      flash[:notice] = 'Welcome to Bitcoupon Merchant'
 
       redirect_to user_path(user)
     else
