@@ -13,9 +13,13 @@ module TransactionsHelper
     request.body = { address: address.chomp }.to_json
     result = request.start
 
-    word = JSON.parse(result.body)['word'].chomp
-    Address.create(address: address, word: word)
+    word = JSON.parse(result.body)['word'].chomp if word
+    Address.create(address: address, word: word.chomp) if word
     word
+  end
+
+  def spaces(number)
+    ('&nbsp' * number).html_safe
   end
 
   private

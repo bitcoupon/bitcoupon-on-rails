@@ -55,8 +55,8 @@ class ApplicationController < ActionController::Base
       request.body = { word: word.chomp }.to_json
       result = request.start
 
-      address = JSON.parse(result.body)['address'].chomp
-      Address.create(address: address, word: word)
+      address = JSON.parse(result.body)['address']
+      Address.create(address: address.chomp, word: word) if address
       address
     end
   end

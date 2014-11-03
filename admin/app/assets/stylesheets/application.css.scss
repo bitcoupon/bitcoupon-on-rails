@@ -14,7 +14,38 @@
  *= require_tree .
  *= require_self
  */
- @import "bootstrap";
+
+@import "bootstrap";
+
 
 /* With navbar-fixed-top we need padding on body */
-body { padding-top: 60px; }
+body {
+  padding-top: 60px;
+ }
+
+.navbar-default {
+  background-color: #FF8D18;
+}
+
+.navbar-nav > li > a {
+  color: #FFFFFF !important;
+}
+
+.navbar-nav > .open > a:focus {
+  background-color: #FFA446 !important;
+}
+
+.navbar-brand {
+  color: #FFFFFF !important;
+}
+
+h2 {
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
+.new-coupon-form {
+  .coupon-submit {
+    margin-bottom: 30px;
+  }
+}

@@ -8,6 +8,10 @@ module Backend
                   only: [:history, :output_history,
                          :verify, :creator_addresses])
 
+    def empty
+      render text: ''
+    end
+
     def verify
       transaction = transaction_params
 

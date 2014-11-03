@@ -1,12 +1,5 @@
 Rails.application.routes.draw do
   resources :users
-  namespace :admin do
-    get 'coupons', to: 'coupons#index'
-    get 'coupon/:id', to: 'coupons#show', as: 'coupon'
-    get 'new_coupon', to: 'coupons#new', as: 'new_coupon'
-    post 'coupons', to: 'coupons#create'
-    delete 'coupon/:id', to: 'coupons#destroy'
-  end
 
   post 'signin', to: 'sessions#create'
   get 'logout', to: 'sessions#destroy'
@@ -14,6 +7,9 @@ Rails.application.routes.draw do
   post 'generate_create_transaction', to: 'transactions#generate_create'
   post 'generate_send_transaction', to: 'transactions#generate_send'
   post 'generate_delete_transaction', to: 'transactions#generate_delete'
+  get 'coupons', to: 'transactions#index'
 
-  root 'transactions#index'
+  get 'welcome', to: 'users#welcome'
+
+  root 'users#welcome'
 end

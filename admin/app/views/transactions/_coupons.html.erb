@@ -1,12 +1,9 @@
-<h2>Listing your coupons</h2>
-<p>
-  Public address of mobile client: 1Kau4L6BM1h6QzLYubq1qWrQSjWdZFQgMb
-</p>
+<h2>Your coupons</h2>
 <table class="table table-striped table-condensed">
   <thead>
     <tr>
-      <th>Creator Address</th>
-      <th>Payload</th>
+      <th>Creator</th>
+      <th>Title</th>
       <th>Issue</th>
       <th>Delete</th>
     </tr>
@@ -18,7 +15,7 @@
         <td><%= translate_address coupon['creatorAddress'] %></td>
         <td><%= coupon['payload'] %></td>
         <td><%= render 'issue_form', creator_address: coupon['creatorAddress'], payload: coupon['payload'] %></td>
-        <td><%= render 'delete_form', creator_address: coupon['creatorAddress'], payload: coupon['payload'], private_key: 'create' %></td>
+        <td><%= render 'delete_form', creator_address: coupon['creatorAddress'], payload: coupon['payload'], private_key: 'create', submit_name: 'Delete' %></td>
       </tr>
     <% end %>
   </tbody>

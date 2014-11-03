@@ -4,38 +4,51 @@ require_dependency '../bitcoupon/api/bitcoin_call'
 # TransactionsController
 # rubocop:disable Metrics/ClassLength
 class TransactionsController < ApplicationController
+  before_filter :require_signin!
+
   def index
+    @return_address = return_address
     set_coupons
   end
 
+  # rubocop:disable Metrics/MethodLength
   def generate_create
     private_key = create_private_key
     payload     = params[:payload]
+    amount      = params[:amount].to_i
+    amount      = 1 if amount.nil? || amount.eql?(0)
 
     return if refuse_payload_with_newlines payload
 
-    output = bitcoin.new.generate_create_transaction(private_key, payload)
+    output = ''
+    amount.times do
+      output = bitcoin.new.generate_create_transaction(private_key, payload)
+      @id = verify_transaction output unless output.blank?
+    end
 
     if output.blank?
       render(text: 'Something went wrong')
     else
-      @id = verify_transaction output
-      redirect_to(root_path, notice: "Transaction #{@id} created")
+      redirect_to(coupons_path, notice: "Transaction #{@id} created")
     end
   end
 
   def generate_send
     output = send_transaction
 
-    if output.blank?
+    if translate_word(params['receiver_address'].downcase).blank?
+      redirect_to(coupons_path,
+                  alert: "Address not found #{params['reciver_address']}")
+    elsif output.blank?
       render text: 'Something went wrong'
     else
       id = verify_transaction output
-      redirect_to(root_path,
+      redirect_to(coupons_path,
                   notice: "Transaction #{id} has been "\
                           "sent to #{params['receiver_address']}")
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   def generate_delete
     output = delete_transaction
@@ -80,8 +93,8 @@ class TransactionsController < ApplicationController
   end
 
   def refuse_payload_with_newlines(payload)
-    alert_msg = 'Do not use newlines in payload'
-    redirect_to(root_path, alert: alert_msg) if payload.match('\n')
+    alert_msg = 'Do not use newlines in title'
+    redirect_to(coupons_path, alert: alert_msg) if payload.match('\n')
     payload.match('\n')
   end
 
@@ -122,17 +135,20 @@ class TransactionsController < ApplicationController
   end
 
   def send_transaction
-    private_key = create_private_key
-
     # Public key: 138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6
     creator_address = params['public_key']
-    payload = params['payload']
+    payload         = params['payload']
 
     # Receiver address: 1Kau4L6BM1h6QzLYubq1qWrQSjWdZFQgMb
-    receiver_address = translate_word params['receiver_address']
-    bitcoin.new.generate_send_transaction(
-                  private_key, creator_address, payload,
-                  receiver_address, output_history(create_private_key))
+    receiver_address = translate_word(params['receiver_address'].downcase)
+
+    if receiver_address.nil?
+      nil
+    else
+      bitcoin.new.generate_send_transaction(
+                    create_private_key, creator_address, payload,
+                    receiver_address, output_history(create_private_key))
+    end
   end
 
   def delete_transaction

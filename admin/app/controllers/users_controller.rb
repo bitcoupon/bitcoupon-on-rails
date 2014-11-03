@@ -1,7 +1,7 @@
 # UsersController
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_filter :require_signin!
+  before_filter :require_signin!, except: [:welcome]
 
   # GET /users
   # GET /users.json
@@ -52,6 +52,9 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     redirect_to users_url, notice: 'User was successfully destroyed.'
+  end
+
+  def welcome
   end
 
   private

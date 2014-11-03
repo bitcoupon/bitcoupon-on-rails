@@ -1,6 +1,12 @@
-<%= form_tag("/generate_send_transaction") do %>
+<%= form_tag("/generate_send_transaction", class: 'form-inline', role: 'form') do %>
   <%= text_field_tag 'public_key', creator_address, hidden: true %>
   <%= text_field_tag 'payload', payload, hidden: true %>
-  <%= text_field_tag 'receiver_address' %>
-  <%= submit_tag 'Issue', class: "btn btn-primary" %>
+  <div class="form-group">
+    <div class="input-group">
+      <%= text_field_tag 'receiver_address', '', class: 'form-control' %>
+      <div class="input-group-btn">
+        <%= submit_tag 'Issue', class: "btn btn-default" %>
+      </div>
+    </div>
+  </div>
 <% end %>
