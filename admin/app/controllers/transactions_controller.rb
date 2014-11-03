@@ -57,7 +57,7 @@ class TransactionsController < ApplicationController
       render text: 'Something went wrong'
     else
       id = verify_transaction output
-      redirect_to(root_path,
+      redirect_to(coupons_path,
                   notice: "Transaction #{id} has been "\
                           'created, deleting the coupon')
     end
