@@ -13,7 +13,7 @@ module TransactionsHelper
     request.body = { address: address.chomp }.to_json
     result = request.start
 
-    word = JSON.parse(result.body)['word'].chomp if word
+    word = JSON.parse(result.body)['word'].chomp if result
     Address.create(address: address, word: word.chomp) if word
     word
   end
