@@ -19,9 +19,9 @@ module Backend
 
     def word
       word = Word.where(word: params[:word].chomp).first
-      address = Address.where(word_id: word.id)
+      address = Address.where(word_id: word.id) unless word.nil?
 
-      if address.any?
+      if address && address.any?
         render json: { address: address.first.address.chomp }
       else
         render json: { error: 'word not found' }, status: 404
