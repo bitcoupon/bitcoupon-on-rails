@@ -31,12 +31,21 @@ body {
   color: #FFFFFF !important;
 }
 
+.col-md-12 {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
 .navbar-nav > .open > a {
   background-color: #FFA446 !important;
 }
 
 .navbar-brand {
   color: #FFFFFF !important;
+}
+
+.btn {
+  text-transform: uppercase;
 }
 
 h2 {
