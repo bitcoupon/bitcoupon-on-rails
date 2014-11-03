@@ -1,9 +1,8 @@
 <div class="users">
+  <div class="pull-right">
+    <%= link_to 'Back', users_path, class: "btn btn-default" %>
+  </div>
   <h1>New user</h1>
 
   <%= render 'form' %>
-
-  <div class="row footer-links">
-    <%= link_to 'Back', users_path, class: "btn btn-info col-md-4" %>
-  </div>
 </div>
