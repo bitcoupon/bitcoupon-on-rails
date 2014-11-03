@@ -3,7 +3,7 @@ require 'test_helper'
 # API Test
 class ApiTest < ActionDispatch::IntegrationTest
   setup do
-    @api = 'http://localhost:3002/backend/coupons'
+    @api = 'http://localhost:3002/backend/creator_addresses'
     @pubkey = 'sdflkj3209ikldjf23kljsd'
   end
 
@@ -17,9 +17,7 @@ class ApiTest < ActionDispatch::IntegrationTest
       http.request(req)
     end
 
-    body = JSON.parse(result.body)
-    result = body['pubkey']
-
-    assert result.eql?(@pubkey)
+    assert result.code.to_i.eql? 200
+    refute result.body.nil?
   end
 end
