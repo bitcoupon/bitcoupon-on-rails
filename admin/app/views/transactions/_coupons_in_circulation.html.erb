@@ -10,7 +10,7 @@
   <tbody>
     <% @coupons_circulating.each do |coupon| %>
       <tr>
-        <td><%= coupon['coupon']['payload'] %></td>
+        <td><%= JSON.parse(coupon['coupon']['payload'])['title'] %></td>
         <td><%= translate_address coupon['ownerAddress'] %></td>
       </tr>
     <% end %>

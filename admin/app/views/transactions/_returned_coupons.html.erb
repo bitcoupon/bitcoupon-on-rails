@@ -10,7 +10,7 @@
   <tbody>
     <% @coupons_returned.each do |coupon| %>
       <tr>
-        <td><%= coupon['payload'] %></td>
+        <td><%= JSON.parse(coupon['payload'])["title"] %></td>
         <td><%= render 'delete_form', creator_address: coupon['creatorAddress'], payload: coupon['payload'], private_key: 'return', submit_name: 'Accept' %></td>
       </tr>
     <% end %>

@@ -19,7 +19,9 @@ class TransactionsController < ApplicationController
   # rubocop:disable Metrics/CyclomaticComplexity
   def generate_create
     private_key = create_private_key
-    payload     = params[:payload]
+    payload     = build_payload(params[:title],
+                                params[:return_word],
+                                params[:description])
     amount      = params[:amount].to_i
     amount      = 1 if amount.nil? || amount.eql?(0) || amount < 1
 
@@ -37,7 +39,7 @@ class TransactionsController < ApplicationController
       respond_to do |format|
         format.js do
           flash[:notice] = "#{pluralize(amount, 'coupon')} with \
-title \"#{payload}\" created"
+title \"#{JSON.parse(payload)['title']}\" created"
         end
       end
     end
@@ -102,6 +104,15 @@ title \"#{payload}\" created"
         coupon['ownerAddress'].eql?(current_user.return_address.chomp)
       end
     end
+  end
+
+  def build_payload(title, word, description)
+    {
+      title: title,
+      description: description,
+      returnWord: word,
+      timestamp: (Time.now.to_i * 1000).to_s
+    }.to_json
   end
 
   def refuse_payload_with_newlines(payload)
