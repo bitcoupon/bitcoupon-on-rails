@@ -51,8 +51,11 @@ title \"#{JSON.parse(payload)['title']}\" created"
     output = send_transaction
 
     if translate_word(params['receiver_address'].downcase).blank?
-      redirect_to(coupons_path,
-                  alert: "Address not found #{params['reciver_address']}")
+      respond_to do |format|
+        format.js do
+          flash[:alert] = "Address not found #{params['reciver_address']}."
+        end
+      end
     elsif output.blank?
       render text: 'Something went wrong'
     else
