@@ -12,7 +12,7 @@
     <div class="input-group col-md-12">
       <div class="input-group-addon">Amount</div>
       <label class="sr-only" for="amount">Amount</label>
-      <%= number_field_tag 'amount', '', class: 'form-control' %>
+      <%= number_field_tag 'amount', '', min: 1, class: 'form-control' %>
     </div>
     <p class="help-block">Amount of coupons to generate with this payload.</p>
   </div>

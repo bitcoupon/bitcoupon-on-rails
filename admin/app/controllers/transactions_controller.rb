@@ -12,11 +12,13 @@ class TransactionsController < ApplicationController
   end
 
   # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/CyclomaticComplexity
   def generate_create
     private_key = create_private_key
     payload     = params[:payload]
     amount      = params[:amount].to_i
-    amount      = 1 if amount.nil? || amount.eql?(0)
+    amount      = 1 if amount.nil? || amount.eql?(0) || amount < 1
 
     return if refuse_payload_with_newlines payload
 
@@ -32,6 +34,8 @@ class TransactionsController < ApplicationController
       redirect_to(coupons_path, notice: "Transaction #{@id} created")
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/PerceivedComplexity
 
   def generate_send
     output = send_transaction
