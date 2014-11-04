@@ -53,7 +53,7 @@ title \"#{JSON.parse(payload)['title']}\" created"
     if translate_word(params['receiver_address'].downcase).blank?
       respond_to do |format|
         format.js do
-          flash[:alert] = "Address not found #{params['reciver_address']}."
+          flash[:alert] = "Address not found \"#{params['receiver_address']}\"."
         end
       end
     elsif output.blank?
