@@ -31,13 +31,35 @@ body {
   color: #FFFFFF !important;
 }
 
-.col-md-12 {
+.col-md-12 .col-no-padding {
   padding-left: 0px !important;
   padding-right: 0px !important;
 }
 
 .navbar-nav > .open > a {
   background-color: #FFA446 !important;
+}
+
+.navbar-default .navbar-toggle {
+  border-color: #FFFFFF !important;
+}
+
+.navbar-default .navbar-toggle:focus {
+  background-color: #FFA446 !important;
+}
+
+.navbar-default .navbar-toggle:hover {
+  background-color: #FFA446 !important;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #FFFFFF !important;
+}
+
+@media (max-width: 767px) {
+  ul.dropdown-menu > li > a {
+    color: #FFFFFF !important;
+  }
 }
 
 .navbar-brand {
