@@ -1,5 +1,5 @@
 <h2>Generate coupons</h2>
-<%= form_tag(generate_create_transaction_path, role: 'form', class: 'form-inline') do %>
+<%= form_tag(generate_create_transaction_path, remote: true, role: 'form', class: 'form-inline generate-form') do %>
   <div class="form-group col-md-12 col-no-padding">
     <div class="input-group col-md-12">
       <div class="input-group-addon">Title<%= spaces(6) %></div>
@@ -14,9 +14,9 @@
       <label class="sr-only" for="amount">Amount</label>
       <%= number_field_tag 'amount', '', min: 1, class: 'form-control' %>
     </div>
-    <p class="help-block">Amount of coupons to generate with this payload.</p>
+    <p class="help-block">Amount of coupons to generate with this title.</p>
   </div>
   <div class="form-group col-md-12 col-no-padding">
-    <%= submit_tag 'Generate coupon', class: "btn btn-default col-md-12 coupon-submit" %>
+    <%= submit_tag 'Generate coupon', class: "btn btn-default col-md-12 coupon-submit", data: { disable_with: "Generating..." } %>
   </div>
 <% end %>

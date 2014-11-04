@@ -6,8 +6,11 @@ require_dependency '../bitcoupon/api/bitcoin_call'
 class TransactionsController < ApplicationController
   before_filter :require_signin!
 
+  include ActionView::Helpers::TextHelper
+
   def index
     @return_address = return_address
+    @create_address = create_address
     set_coupons
   end
 
@@ -31,7 +34,12 @@ class TransactionsController < ApplicationController
     if output.blank?
       render(text: 'Something went wrong')
     else
-      redirect_to(coupons_path, notice: "Transaction #{@id} created")
+      respond_to do |format|
+        format.js do
+          flash[:notice] = "#{pluralize(amount, 'coupon')} with \
+title \"#{payload}\" created"
+        end
+      end
     end
   end
   # rubocop:enable Metrics/CyclomaticComplexity
