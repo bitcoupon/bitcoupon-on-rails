@@ -1,11 +1,11 @@
-<%= form_tag("/generate_send_transaction", class: 'form-inline', role: 'form') do %>
+<%= form_tag("/generate_send_transaction", class: 'form-inline', remote: true, role: 'form') do %>
   <%= text_field_tag 'public_key', creator_address, hidden: true %>
   <%= text_field_tag 'payload', payload, hidden: true %>
   <div class="form-group">
     <div class="input-group">
       <%= text_field_tag 'receiver_address', '', placeholder: 'Mobile ID', class: 'form-control' %>
       <div class="input-group-btn">
-        <%= submit_tag 'Send', class: "btn btn-default" %>
+        <%= submit_tag 'Send', class: "btn btn-default", data: { disable_with: "Sending..." } %>
       </div>
     </div>
   </div>

@@ -56,13 +56,15 @@ title \"#{JSON.parse(payload)['title']}\" created"
     elsif output.blank?
       render text: 'Something went wrong'
     else
-      id = verify_transaction output
-      redirect_to(coupons_path,
-                  notice: "Transaction #{id} has been "\
-                          "sent to #{params['receiver_address']}")
+      @id = verify_transaction output
+      respond_to do |format|
+        format.js do
+          flash[:notice] = "Coupon #{JSON.parse(params[:payload])['title']}\
+ has been sent to #{params['receiver_address']}"
+        end
+      end
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
   def generate_delete
     output = delete_transaction
@@ -70,12 +72,16 @@ title \"#{JSON.parse(payload)['title']}\" created"
     if output.blank?
       render text: 'Something went wrong'
     else
-      id = verify_transaction output
-      redirect_to(coupons_path,
-                  notice: "Transaction #{id} has been "\
-                          'created, deleting the coupon')
+      @id = verify_transaction output
+      respond_to do |format|
+        format.js do
+          flash[:notice] = "Coupon #{JSON.parse(params[:payload])['title']}\
+has been deleted"
+        end
+      end
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 
