@@ -23,6 +23,11 @@ body {
   padding-top: 60px;
  }
 
+.input-group-addon {
+  min-width:150px !important;
+  text-align:center !important;
+}
+
 .navbar-default {
   background-color: #FF8D18;
 }
