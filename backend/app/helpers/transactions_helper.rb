@@ -1,3 +1,0 @@
-# TransactionsHelper
-module TransactionsHelper
-end

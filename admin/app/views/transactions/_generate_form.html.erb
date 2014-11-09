@@ -4,7 +4,7 @@
     <div class="input-group col-md-12">
       <div class="input-group-addon">Title<%= spaces(12) %></div>
       <label for="payload" class="sr-only">Coupon title</label>
-      <%= text_field_tag 'title', '', class: 'form-control', placeholder: '1 Lycheburger' %>
+      <%= text_field_tag 'title', '', class: 'form-control', placeholder: 'Ex: 1 Lycheburger' %>
     </div>
     <p class="help-block">Enter the title of the coupon.</p>
   </div>
@@ -12,7 +12,7 @@
     <div class="input-group col-md-12">
       <div class="input-group-addon">Description</div>
       <label for="payload" class="sr-only">Coupon description</label>
-      <%= text_field_tag 'description', '', class: 'form-control', placeholder: 'Valid in Lyche, Samfundet. Valid out 2014.' %>
+      <%= text_field_tag 'description', '', class: 'form-control', placeholder: 'Ex: Valid in Lyche, Samfundet. Valid out 2014.' %>
     </div>
     <p class="help-block">Describe the coupon, and add information for the mobile user.</p>
   </div>
@@ -21,7 +21,7 @@
     <div class="input-group col-md-12">
       <div class="input-group-addon">Number of coupons</div>
       <label class="sr-only" for="amount">Number of coupons</label>
-      <%= number_field_tag 'amount', '', min: 1, class: 'form-control', placeholder: 3 %>
+      <%= number_field_tag 'amount', '', min: 1, class: 'form-control', placeholder: 'Ex: 3' %>
     </div>
     <p class="help-block">The number of coupons to generate with this title.</p>
   </div>

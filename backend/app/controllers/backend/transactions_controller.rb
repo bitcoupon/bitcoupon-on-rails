@@ -1,4 +1,6 @@
 module Backend
+  require_dependency '../bitcoupon/api/bitcoin_call'
+
   # TransactionsController
   class TransactionsController < ApplicationController
     skip_before_filter(:verify_authenticity_token,
