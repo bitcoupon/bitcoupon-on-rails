@@ -11,5 +11,5 @@ Rails.application.routes.draw do
 
   get 'welcome', to: 'users#welcome'
 
-  root 'users#welcome'
+  root 'transactions#index'
 end

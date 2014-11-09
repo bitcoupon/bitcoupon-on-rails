@@ -5,20 +5,10 @@
   </div>
   <h2><%= @user.email %></h2>
 
-  <p>
-    <strong>Email:</strong>
-    <%= @user.email %>
-  </p>
-
-  <p>
-    <strong>Create address:</strong>
-    <%= translate_address @user.create_address %>
-  </p>
-
-  <p>
-    <strong>Return address:</strong>
-    <%= translate_address @user.return_address %>
-  </p>
-
-  <%= link_to 'All users', users_path, class: "btn btn-default col-md-12" %>
+  <dl class="dl-horizontal">
+    <dt><strong>CREATE ADDRESS</strong></dt>
+    <dd><%= translate_address @user.create_address %></dd>
+    <dt><strong>RETURN ADDRESS</strong></dt>
+    <dd><%= translate_address @user.return_address %></dd>
+  </dl>
 </div>

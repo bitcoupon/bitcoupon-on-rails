@@ -7,14 +7,14 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
       flash[:notice] = 'Welcome to Bitcoupon Merchant'
 
-      redirect_to user_path(user)
+      redirect_to root_path
     else
-      redirect_to root_path, alert: 'Wrong password'
+      redirect_to welcome_path, alert: 'Wrong password'
     end
   end
 
   def destroy
     session[:user_id] = nil
-    redirect_to root_url, notice: 'You have been logged out'
+    redirect_to welcome_path, notice: 'You have been logged out'
   end
 end

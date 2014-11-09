@@ -1,8 +1,14 @@
 <div class="users col-md-12">
-  <div class="new-coupon-form">
+  <div class="row new-coupon-form">
     <%= render 'generate_form' %>
   </div>
-  <%= render 'coupons' %>
-  <%= render 'coupons_in_circulation' %>
-  <%= render 'returned_coupons' %>
+  <div class="row">
+    <%= render 'coupons' %>
+  </div>
+  <div class="row">
+    <%= render 'coupons_in_circulation' %>
+  </div>
+  <div class="row">
+    <%= render 'returned_coupons' %>
+  </div>
 </div>

@@ -28,6 +28,18 @@ body {
   text-align:center !important;
 }
 
+td.break {
+  word-break: break-all;
+}
+
+.form-group {
+  width: 100% !important;
+}
+
+.input-group {
+  width: 100% !important;
+}
+
 .navbar-default {
   background-color: #FF8D18;
 }

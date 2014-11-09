@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
 
   def require_signin!
     return if current_user
-    redirect_to(root_path,
+    redirect_to(welcome_path,
                 alert: 'You have to be logged in to access this page.')
   end
 
