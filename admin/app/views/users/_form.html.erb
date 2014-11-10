@@ -1,11 +1,13 @@
 <div class="row">
-  <%= bootstrap_form_for(@user,
-                         layout: :horizontal,
-                         label_col: "col-md-2",
-                         control_col: "col-md-6") do |f| %>
-    <%= f.text_field :email %>
-    <%= f.password_field :password %>
+  <div class="col-md-12">
+    <%= bootstrap_form_for(@user,
+                           layout: :horizontal,
+                           label_col: "col-md-4",
+                           control_col: "col-md-8") do |f| %>
+      <%= f.text_field :email %>
+      <%= f.password_field :password %>
 
-    <%= f.submit nil, class: "btn btn-default col-md-12" %>
-  <% end %>
+      <%= f.submit nil, class: "btn btn-default col-md-12" %>
+    <% end %>
+  </div>
 </div>

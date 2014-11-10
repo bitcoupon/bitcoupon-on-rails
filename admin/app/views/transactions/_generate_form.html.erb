@@ -25,7 +25,9 @@
     </div>
     <p class="help-block">The number of coupons to generate with this title.</p>
   </div>
-  <div class="form-group col-md-12 col-no-padding">
-    <%= submit_tag 'Generate coupon', class: "btn btn-default col-md-12 coupon-submit", data: { disable_with: "Generating..." } %>
+  <div class="row">
+    <div class="form-group col-md-12">
+      <%= submit_tag 'Generate coupon', class: "btn btn-default col-md-12 coupon-submit", data: { disable_with: "Generating..." } %>
+    </div>
   </div>
 <% end %>

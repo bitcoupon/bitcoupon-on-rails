@@ -1,5 +1,3 @@
-require_dependency '../bitcoupon/api/bitcoin_call'
-
 # User
 class User < ActiveRecord::Base
   has_secure_password

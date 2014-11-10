@@ -13,9 +13,7 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="navbar-collapse-target">
-      <ul class="nav navbar-nav">
-        <li><%= button_to 'COUPONS', coupons_path, class: 'btn btn-default navbar-btn', method: :get %></li>
-      </ul>
+      <%= link_to 'COUPONS', coupons_path, class: 'btn btn-default navbar-btn', method: :get %>
       <% if current_user %>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">

@@ -1,6 +1,3 @@
-require_dependency '../bitcoupon/api/backend_request'
-require_dependency '../bitcoupon/api/bitcoin_call'
-
 # TransactionsController
 # rubocop:disable Metrics/ClassLength
 class TransactionsController < ApplicationController

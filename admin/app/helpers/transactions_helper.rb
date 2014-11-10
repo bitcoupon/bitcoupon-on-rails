@@ -1,5 +1,3 @@
-require_dependency '../bitcoupon/api/backend_request'
-
 # TransactionsHelper
 module TransactionsHelper
   def translate_address(address)
