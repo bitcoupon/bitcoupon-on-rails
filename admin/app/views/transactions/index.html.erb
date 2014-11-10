@@ -1,8 +1,8 @@
 <div class="users col-md-12">
   <div class="new-coupon-form">
-    <%= render 'generate_form' %>
+    <%= render 'transactions/forms/generate' %>
   </div>
-  <%= render 'coupons' %>
-  <%= render 'coupons_in_circulation' %>
-  <%= render 'returned_coupons' %>
+  <%= render 'transactions/coupons/created' %>
+  <%= render 'transactions/coupons/circulating' %>
+  <%= render 'transactions/coupons/returned' %>
 </div>

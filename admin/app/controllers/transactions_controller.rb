@@ -37,6 +37,7 @@ class TransactionsController < ApplicationController
         format.js do
           flash[:notice] = "#{pluralize(amount, 'coupon')} with \
 title \"#{JSON.parse(payload)['title']}\" created"
+          render 'reload'
         end
       end
     end
@@ -61,6 +62,7 @@ title \"#{JSON.parse(payload)['title']}\" created"
         format.js do
           flash[:notice] = "Coupon #{JSON.parse(params[:payload])['title']}\
  has been sent to #{params['receiver_address']}"
+          render 'reload'
         end
       end
     end
@@ -77,6 +79,7 @@ title \"#{JSON.parse(payload)['title']}\" created"
         format.js do
           flash[:notice] = "Coupon #{JSON.parse(params[:payload])['title']}\
 has been deleted"
+          render 'reload'
         end
       end
     end

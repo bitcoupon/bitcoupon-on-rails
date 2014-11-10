@@ -16,10 +16,6 @@ module TransactionsHelper
     word
   end
 
-  def spaces(number)
-    ('&nbsp' * number).html_safe
-  end
-
   private
 
   def backend_request

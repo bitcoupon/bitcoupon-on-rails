@@ -1,17 +1,22 @@
 module Backend
   # TransactionsController
+  # This controller receives requests from the clients, and
+  #   delegates the work to the Bitcoupon Java library.
+  # It also uses Transaction and Output models to interact with
+  #   the database.
+  # All the methods (except empty) render JSON.
   class TransactionsController < ApplicationController
-    skip_before_filter(:verify_authenticity_token,
-                       only: [:verify, :output_history])
+    before_action :check_headers, only: [:verify, :output_history]
 
-    before_action(:check_headers,
-                  only: [:history, :output_history,
-                         :verify, :creator_addresses])
-
+    # GET /backend/empty
+    # Used by the mobile client to check for a 200 response.
     def empty
       render text: ''
     end
 
+    # POST /backend/verify_transaction
+    # Receives a transaction, and verifies it using the Bitcoupon Java library.
+    # If the transaction is valid it is saved to the database.
     def verify
       transaction = transaction_params
 
@@ -27,10 +32,10 @@ module Backend
       end
     end
 
-    def history
-      render json: Transaction.history
-    end
-
+    # POST /backend/output_history
+    # Returns the output history for a given address.
+    # Must be given a valid, signed history request, so that
+    # only the owner of the address can request his history.
     def output_history
       history_request = set_history_request
       address = JSON.parse(history_request)['address']
@@ -44,21 +49,14 @@ module Backend
       end
     end
 
-    # TODO: Marked for deletion, or used by app?
-    def creator_addresses
-      private_key = '5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu'
-      output = bitcoin.new.creator_addresses private_key, Transaction.history
-
-      render json: output
-    end
-
     private
 
+    # The mobile client uses null in JSON, instead of empty array.
+    # We therefore have to translate the params to this form.
     def transaction_params
       transaction = params[:transaction]
 
       unless transaction.class.eql?(String)
-        # TODO: The Android app should never send nils in JSON
         transaction['creations'] = [] if transaction['creations'].nil?
         transaction = transaction.to_json.to_s
       end
@@ -66,6 +64,8 @@ module Backend
       transaction
     end
 
+    # The mobile and admin clients access the output_history endpoint
+    # differently. This discrepancy is handled here.
     def set_history_request
       if params['output_history_request']
         params['output_history_request']

@@ -2,7 +2,7 @@
 <%= form_tag(generate_create_transaction_path, remote: true, role: 'form', class: 'form-inline generate-form') do %>
   <div class="form-group col-md-12 col-no-padding">
     <div class="input-group col-md-12">
-      <div class="input-group-addon">Title<%= spaces(12) %></div>
+      <div class="input-group-addon">Title</div>
       <label for="payload" class="sr-only">Coupon title</label>
       <%= text_field_tag 'title', '', class: 'form-control', placeholder: 'Ex: 1 Lycheburger' %>
     </div>

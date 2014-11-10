@@ -1,9 +1,5 @@
 # ApplicationController
 class ApplicationController < ActionController::Base
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
-
   def bitcoin
     Bitcoupon::Api::BitcoinCall
   end
@@ -12,8 +8,10 @@ class ApplicationController < ActionController::Base
 
   def check_headers
     if token.blank?
-      render json: '{"error":"No token given"}'
+      render json: '{"error":"No token given"}', status: 401
       return
+    elsif !token.eql?(Rails.application.secrets.api_secret)
+      render json: '{"error":"Wrong token given"}', status: 401
     end
     response.headers['token'] = token
   end

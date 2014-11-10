@@ -3,8 +3,6 @@ module Backend
   class AddressesController < ApplicationController
     before_action :check_headers, only: [:address, :word]
 
-    skip_before_filter :verify_authenticity_token, only: [:address, :word]
-
     def address
       address = Address.where(address: params[:address].chomp)
       if address.any?
