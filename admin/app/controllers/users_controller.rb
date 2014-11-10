@@ -27,6 +27,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
+    @user.email = @user.email.downcase
 
     @user.generate_keys
 
