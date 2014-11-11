@@ -2,58 +2,10 @@ module Bitcoupon
   module Api
     # Class encapsulating integration with Bitcoupon Java library
     class BitcoinCall
-      attr_accessor :command_1_0, :command_2_0, :method
+      attr_accessor :command, :method
 
       def initialize
-        @command_1_0 = 'java -jar ../bitcoin/bitcoin-1.0.jar'
-        @command_2_0 = 'java -jar ../bitcoin/bitcoin-2.0.jar'
-      end
-
-      # 1.0 Library
-
-      # Name: getCreatorAddresses
-      # Arguments: String privateKey, String transactionHistoryJson
-      def creator_addresses(private_key, transaction_history)
-        @method = 'getCreatorAddresses'
-        key     = Shellwords.escape private_key
-        history = Shellwords.escape transaction_history
-
-        `#{command_1_0} #{method} #{key} #{history}`
-      end
-
-      # Name: generateCreationTransaction
-      # Arguments: String privateKey
-      def generate_creation_transaction(private_key)
-        @method = 'generateCreationTransaction'
-
-        `#{command_1_0} #{method} #{private_key}`
-      end
-
-      # Name: generateSendTransaction
-      # Arguments: String privateKey, String creatorAddress,
-      #            String transactionHistoryJson, String receiverAddress
-      def generate_send_transaction_1_0(private_key, creator_address,
-                                    transaction_history, receiver_address)
-        @method = 'generateSendTransaction'
-        history = Shellwords.escape transaction_history
-
-        `#{command_1_0} #{method} #{private_key}\
-         #{creator_address} #{history} #{receiver_address}`
-      end
-
-      # Name: verifyTransaction
-      # Arguments: String transactionJson, String transactionHistoryJson
-      def verify_transaction_1_0(transaction_json, transaction_history_json)
-        @method = 'verifyTransaction'
-        arg_one = Shellwords.escape transaction_json.chomp
-        arg_two = Shellwords.escape transaction_history_json
-        output = `#{command_1_0} #{method} #{arg_one} #{arg_two}`
-
-        if output.chomp.eql? 'true'
-          true
-        else
-          false
-        end
+        @command = 'java -jar ../bitcoin/bitcoin-2.0.jar'
       end
 
       # 2.0 Library
@@ -65,7 +17,7 @@ module Bitcoupon
         key     = Shellwords.escape private_key
         payload = Shellwords.escape payload_input
 
-        `#{command_2_0} #{method} #{key} #{payload}`
+        `#{command} #{method} #{key} #{payload}`
       end
 
       # Name: generateSendTransaction
@@ -79,7 +31,7 @@ module Bitcoupon
         payload = Shellwords.escape payload
         history = Shellwords.escape output_history
 
-        `#{command_2_0} #{method} #{private_key} \
+        `#{command} #{method} #{private_key} \
 #{creator_address} #{payload} #{receiver_address} #{history}`
       end
 
@@ -93,7 +45,7 @@ module Bitcoupon
         payload = Shellwords.escape payload
         history = Shellwords.escape output_history
 
-        `#{command_2_0} #{method} #{private_key} \
+        `#{command} #{method} #{private_key} \
 #{creator_address} #{payload} #{history}`
       end
 
@@ -105,7 +57,7 @@ module Bitcoupon
         arg_one = Shellwords.escape transaction_json.chomp
         arg_two = Shellwords.escape output_history_json
 
-        output = `#{command_2_0} #{method} #{arg_one} #{arg_two}`
+        output = `#{command} #{method} #{arg_one} #{arg_two}`
 
         if output.chomp.eql? 'true'
           true
@@ -120,7 +72,7 @@ module Bitcoupon
       def generate_output_history_request(private_key)
         @method = 'generateOutputHistoryRequest'
 
-        `#{command_2_0} #{method} #{private_key}`
+        `#{command} #{method} #{private_key}`
       end
 
       # Name: verifyOutputHistoryRequest
@@ -130,7 +82,7 @@ module Bitcoupon
         @method = 'verifyOutputHistoryRequest'
         request = Shellwords.escape output_history_request
 
-        output = `#{command_2_0} #{method} #{request}`
+        output = `#{command} #{method} #{request}`
 
         if output.chomp.eql? 'true'
           true
@@ -147,7 +99,7 @@ module Bitcoupon
         address     = Shellwords.escape address
         history = Shellwords.escape output_history_json
 
-        `#{command_2_0} #{method} #{address} #{history}`
+        `#{command} #{method} #{address} #{history}`
       end
 
       # Name: getCouponOwners
@@ -158,7 +110,7 @@ module Bitcoupon
         address     = Shellwords.escape address
         history = Shellwords.escape output_history_json
 
-        `#{command_2_0} #{method} #{address} #{history}`
+        `#{command} #{method} #{address} #{history}`
       end
 
       # Name: generatePrivateKey
@@ -166,7 +118,7 @@ module Bitcoupon
 
       def generate_private_key
         @method = 'generatePrivateKey'
-        `#{command_2_0} #{method}`
+        `#{command} #{method}`
       end
 
       # Name: generateAddress
@@ -174,7 +126,7 @@ module Bitcoupon
 
       def generate_address(private_key)
         @method = 'generateAddress'
-        `#{command_2_0} #{method} #{private_key}`
+        `#{command} #{method} #{private_key}`
       end
     end
   end
