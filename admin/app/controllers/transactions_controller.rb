@@ -52,6 +52,7 @@ title \"#{JSON.parse(payload)['title']}\" created"
       respond_to do |format|
         format.js do
           flash[:alert] = "Address not found \"#{params['receiver_address']}\"."
+          render 'reload'
         end
       end
     elsif output.blank?

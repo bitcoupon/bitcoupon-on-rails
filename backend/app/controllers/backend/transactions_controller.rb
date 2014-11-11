@@ -22,9 +22,7 @@ module Backend
 
       result = bitcoin.new.verify_transaction(transaction, Output.all_history)
 
-      transaction = Transaction.from_json(transaction)
-
-      if result && transaction.save
+      if result && Transaction.from_json(transaction).save
         response.headers['id'] = transaction.id.to_s
         render json: transaction
       else
