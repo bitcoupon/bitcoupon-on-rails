@@ -73,6 +73,10 @@
 
   <ul class="link-list" role="directory">
     
+    <li ><a href="#method-i-generate_keys">#generate_keys</a>
+    
+    <li ><a href="#method-i-output_history_request">#output_history_request</a>
+    
     <li ><a href="#method-i-password-3F">#password?</a>
     
   </ul>
@@ -88,6 +92,8 @@
 
   <section class="description">
     
+<p><a href="User.html">User</a></p>
+
   </section>
 
   
@@ -109,6 +115,82 @@
        </header>
 
     
+      <div id="method-i-generate_keys" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">generate_keys</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="generate_keys-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 12</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_keys</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create_private_key</span> = <span class="ruby-identifier">bitcoin</span>.<span class="ruby-identifier">generate_private_key</span>.<span class="ruby-identifier">chomp</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">return_private_key</span> = <span class="ruby-identifier">bitcoin</span>.<span class="ruby-identifier">generate_private_key</span>.<span class="ruby-identifier">chomp</span>
+
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create_address</span> = <span class="ruby-identifier">bitcoin</span>.<span class="ruby-identifier">generate_address</span> <span class="ruby-identifier">create_private_key</span>.<span class="ruby-identifier">chomp</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">return_address</span> = <span class="ruby-identifier">bitcoin</span>.<span class="ruby-identifier">generate_address</span> <span class="ruby-identifier">return_private_key</span>.<span class="ruby-identifier">chomp</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-output_history_request" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">output_history_request</span><span
+            class="method-args">(private_key)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="output_history_request-source">
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 20</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">output_history_request</span>(<span class="ruby-identifier">private_key</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>[<span class="ruby-value">:output_history_request</span>].<span class="ruby-identifier">blank?</span>
+    <span class="ruby-keyword">self</span>[<span class="ruby-value">:output_history_request</span>] = <span class="ruby-identifier">bitcoin</span>
+                                      .<span class="ruby-identifier">generate_output_history_request</span>(
+                                        <span class="ruby-identifier">private_key</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">self</span>[<span class="ruby-value">:output_history_request</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
       <div id="method-i-password-3F" class="method-detail ">
         
         <div class="method-heading">
@@ -128,9 +210,9 @@
 
           
           <div class="method-source-code" id="password-3F-source">
-            <pre><span class="ruby-comment"># File app/models/user.rb, line 9</span>
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 8</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">password?</span>
-  <span class="ruby-operator">!</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">password_digest</span>.<span class="ruby-identifier">blank?</span>
+  <span class="ruby-operator">!</span><span class="ruby-identifier">password_digest</span>.<span class="ruby-identifier">blank?</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -150,7 +232,7 @@
 
 <footer id="validator-badges" role="contentinfo">
   <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.1.
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.2.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

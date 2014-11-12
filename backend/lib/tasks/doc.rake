@@ -26,4 +26,8 @@ namespace :doc do
     `rmdir doc`
     puts 'Removed doc from backend'
   end
+
+  task :tests do
+    `mv coverage ../test_reports/backend_coverage`
+  end
 end

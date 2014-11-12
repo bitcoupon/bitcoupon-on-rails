@@ -73,9 +73,9 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-i-creator_addresses">#creator_addresses</a>
+    <li ><a href="#method-i-empty">#empty</a>
     
-    <li ><a href="#method-i-history">#history</a>
+    <li ><a href="#method-i-output_history">#output_history</a>
     
     <li ><a href="#method-i-verify">#verify</a>
     
@@ -92,7 +92,17 @@
 
   <section class="description">
     
-<p><a href="TransactionsController.html">TransactionsController</a></p>
+<p><a href="TransactionsController.html">TransactionsController</a> This
+controller receives requests from the clients, and</p>
+
+<pre>delegates the work to the Bitcoupon Java library.</pre>
+
+<p>It also uses <a href="../Transaction.html">Transaction</a> and <a
+href="../Output.html">Output</a> models to interact with</p>
+
+<pre>the database.</pre>
+
+<p>All the methods (except empty) render JSON.</p>
 
   </section>
 
@@ -115,10 +125,10 @@
        </header>
 
     
-      <div id="method-i-creator_addresses" class="method-detail ">
+      <div id="method-i-empty" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">creator_addresses</span><span
+          <span class="method-name">empty</span><span
             class="method-args">()</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -128,18 +138,15 @@
 
         <div class="method-description">
           
-          <p>TODO: Marked for deletion, or used by app?</p>
+          <p>GET /backend/empty Used by the mobile client to check for a 200 response.</p>
           
           
 
           
-          <div class="method-source-code" id="creator_addresses-source">
-            <pre><span class="ruby-comment"># File app/controllers/backend/transactions_controller.rb, line 27</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">creator_addresses</span>
-  <span class="ruby-identifier">private_key</span> = <span class="ruby-string">&#39;5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu&#39;</span>
-  <span class="ruby-identifier">output</span> = <span class="ruby-identifier">bitcoin</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">creator_addresses</span> <span class="ruby-identifier">private_key</span>, <span class="ruby-constant">Transaction</span>.<span class="ruby-identifier">history</span>
-
-  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">output</span>
+          <div class="method-source-code" id="empty-source">
+            <pre><span class="ruby-comment"># File app/controllers/backend/transactions_controller.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">empty</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -151,10 +158,10 @@
       </div>
 
     
-      <div id="method-i-history" class="method-detail ">
+      <div id="method-i-output_history" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">history</span><span
+          <span class="method-name">output_history</span><span
             class="method-args">()</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -164,15 +171,26 @@
 
         <div class="method-description">
           
-          
+          <p>POST /backend/output_history Returns the output history for a given
+address. Must be given a valid, signed history request, so that only the
+owner of the address can request his history.</p>
           
           
 
           
-          <div class="method-source-code" id="history-source">
-            <pre><span class="ruby-comment"># File app/controllers/backend/transactions_controller.rb, line 22</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">history</span>
-  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-constant">Transaction</span>.<span class="ruby-identifier">history</span>
+          <div class="method-source-code" id="output_history-source">
+            <pre><span class="ruby-comment"># File app/controllers/backend/transactions_controller.rb, line 38</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">output_history</span>
+  <span class="ruby-identifier">history_request</span> = <span class="ruby-identifier">set_history_request</span>
+  <span class="ruby-identifier">address</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">history_request</span>)[<span class="ruby-string">&#39;address&#39;</span>]
+
+  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">bitcoin</span>.<span class="ruby-identifier">verify_output_history_request</span>(<span class="ruby-identifier">history_request</span>)
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">result</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-constant">Output</span>.<span class="ruby-identifier">history</span>(<span class="ruby-identifier">address</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;{&quot;error&quot;:&quot;INVALID OUTPUT HISTORY REQUEST&quot;}&#39;</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">401</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -197,25 +215,27 @@
 
         <div class="method-description">
           
-          
+          <p>POST /backend/verify_transaction Receives a transaction, and verifies it
+using the Bitcoupon Java library. If the transaction is valid it is saved
+to the database.</p>
           
           
 
           
           <div class="method-source-code" id="verify-source">
-            <pre><span class="ruby-comment"># File app/controllers/backend/transactions_controller.rb, line 8</span>
+            <pre><span class="ruby-comment"># File app/controllers/backend/transactions_controller.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">verify</span>
-  <span class="ruby-identifier">transaction</span> = <span class="ruby-identifier">transaction_params</span>
+  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">bitcoin</span>.<span class="ruby-identifier">verify_transaction</span>(<span class="ruby-identifier">transaction_json</span>, <span class="ruby-constant">Output</span>.<span class="ruby-identifier">all_history</span>)
 
-  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">bitcoin</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">verify_transaction</span>(<span class="ruby-identifier">transaction</span>, <span class="ruby-constant">Transaction</span>.<span class="ruby-identifier">history</span>)
-  <span class="ruby-identifier">transaction</span> = <span class="ruby-constant">Transaction</span>.<span class="ruby-identifier">from_json</span>(<span class="ruby-identifier">transaction</span>)
-
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">result</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">transaction</span>.<span class="ruby-identifier">save</span>
-    <span class="ruby-identifier">response</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-string">&#39;id&#39;</span>] = <span class="ruby-identifier">transaction</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">transaction</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;{&quot;error&quot;:&quot;TRANSACTION NOT SAVED&quot;}&#39;</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">401</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">result</span>
+    <span class="ruby-identifier">transaction</span> = <span class="ruby-constant">Transaction</span>.<span class="ruby-identifier">from_json</span>(<span class="ruby-identifier">transaction_json</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">transaction</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-identifier">response</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-string">&#39;id&#39;</span>] = <span class="ruby-identifier">transaction</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">transaction</span>
+      <span class="ruby-keyword">return</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;{&quot;error&quot;:&quot;TRANSACTION NOT SAVED&quot;}&#39;</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">401</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -235,7 +255,7 @@
 
 <footer id="validator-badges" role="contentinfo">
   <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.1.
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.2.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

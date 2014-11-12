@@ -26,4 +26,8 @@ namespace :doc do
     `rmdir doc`
     puts 'Removed doc from admin'
   end
+
+  task :tests do
+    `mv coverage ../test_reports/admin_coverage`
+  end
 end

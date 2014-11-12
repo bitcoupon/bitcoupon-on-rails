@@ -1,17 +1,11 @@
-Tue, 07 Oct 2014 12:31:34 +0200
+Wed, 12 Nov 2014 11:20:31 +0100
 README.rdoc	Mon, 06 Oct 2014 14:15:15 +0200
-app/admin/bitcoupon/api/backend_request.rb	Tue, 07 Oct 2014 12:31:25 +0200
-app/admin/bitcoupon/coupon_result.rb	Mon, 06 Oct 2014 14:15:15 +0200
-app/controllers/admin/coupons_controller.rb	Mon, 06 Oct 2014 14:15:15 +0200
-app/controllers/application_controller.rb	Mon, 06 Oct 2014 14:15:15 +0200
-app/controllers/transactions_controller.rb	Tue, 07 Oct 2014 12:22:10 +0200
-app/controllers/users_controller.rb	Mon, 06 Oct 2014 14:15:15 +0200
-app/helpers/application_helper.rb	Mon, 06 Oct 2014 14:15:15 +0200
-app/helpers/transactions_helper.rb	Mon, 06 Oct 2014 14:15:15 +0200
-app/helpers/users_helper.rb	Mon, 06 Oct 2014 14:15:15 +0200
-app/models/coupon.rb	Mon, 06 Oct 2014 14:15:15 +0200
-app/models/creation.rb	Mon, 06 Oct 2014 14:15:15 +0200
-app/models/input.rb	Mon, 06 Oct 2014 14:15:15 +0200
-app/models/output.rb	Mon, 06 Oct 2014 14:15:15 +0200
-app/models/transaction.rb	Mon, 06 Oct 2014 14:15:15 +0200
-app/models/user.rb	Mon, 06 Oct 2014 14:15:15 +0200
+app/admin/bitcoupon/api/backend_request.rb	Mon, 10 Nov 2014 12:47:25 +0100
+app/admin/bitcoupon/api/bitcoin_call.rb	Wed, 12 Nov 2014 11:19:01 +0100
+app/controllers/application_controller.rb	Wed, 12 Nov 2014 11:19:01 +0100
+app/controllers/sessions_controller.rb	Sun, 09 Nov 2014 22:12:11 +0100
+app/controllers/transactions_controller.rb	Wed, 12 Nov 2014 11:19:01 +0100
+app/controllers/users_controller.rb	Mon, 10 Nov 2014 12:16:58 +0100
+app/helpers/transactions_helper.rb	Mon, 10 Nov 2014 12:17:25 +0100
+app/models/address.rb	Sun, 02 Nov 2014 16:05:53 +0100
+app/models/user.rb	Wed, 12 Nov 2014 11:19:01 +0100

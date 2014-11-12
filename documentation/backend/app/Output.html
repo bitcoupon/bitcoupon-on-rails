@@ -67,7 +67,25 @@
 
     
     
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
     
+    <li ><a href="#method-c-all_history">::all_history</a>
+    
+    <li ><a href="#method-c-from_json">::from_json</a>
+    
+    <li ><a href="#method-c-history">::history</a>
+    
+    <li ><a href="#method-c-history_from_outputs">::history_from_outputs</a>
+    
+    <li ><a href="#method-c-output_hash">::output_hash</a>
+    
+  </ul>
+</div>
+
   </div>
 </nav>
 
@@ -78,6 +96,8 @@
 
   <section class="description">
     
+<p><a href="Output.html">Output</a></p>
+
   </section>
 
   
@@ -93,13 +113,219 @@
     
 
     
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-all_history" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">all_history</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="all_history-source">
+            <pre><span class="ruby-comment"># File app/models/output.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">all_history</span>
+  <span class="ruby-identifier">outputs</span> = <span class="ruby-identifier">where</span>(<span class="ruby-identifier">input_id</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>).<span class="ruby-identifier">to_a</span>
+
+  <span class="ruby-identifier">history_from_outputs</span>(<span class="ruby-identifier">outputs</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-from_json" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">from_json</span><span
+            class="method-args">(output_json)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="from_json-source">
+            <pre><span class="ruby-comment"># File app/models/output.rb, line 8</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">from_json</span>(<span class="ruby-identifier">output_json</span>)
+  <span class="ruby-identifier">output</span> = <span class="ruby-constant">Output</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">output</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">output_json</span>.<span class="ruby-identifier">blank?</span>
+
+  <span class="ruby-comment"># Only one creation for now</span>
+  <span class="ruby-identifier">output_json</span> = <span class="ruby-identifier">output_json</span>.<span class="ruby-identifier">first</span>
+  <span class="ruby-comment"># TODO: Make loop</span>
+
+  <span class="ruby-identifier">output</span>.<span class="ruby-identifier">creator_address</span> = <span class="ruby-identifier">output_json</span>[<span class="ruby-string">&#39;creatorAddress&#39;</span>]
+  <span class="ruby-identifier">output</span>.<span class="ruby-identifier">payload</span> = <span class="ruby-identifier">output_json</span>[<span class="ruby-string">&#39;payload&#39;</span>]
+  <span class="ruby-identifier">output</span>.<span class="ruby-identifier">amount</span> = <span class="ruby-identifier">output_json</span>[<span class="ruby-string">&#39;amount&#39;</span>].<span class="ruby-identifier">to_i</span>
+  <span class="ruby-identifier">output</span>.<span class="ruby-identifier">receiver_address</span> = <span class="ruby-identifier">output_json</span>[<span class="ruby-string">&#39;receiverAddress&#39;</span>]
+  <span class="ruby-identifier">output</span>.<span class="ruby-identifier">input_id</span> = <span class="ruby-identifier">output_json</span>[<span class="ruby-string">&#39;referringInput&#39;</span>].<span class="ruby-identifier">to_i</span>
+
+  <span class="ruby-identifier">output</span>.<span class="ruby-identifier">save</span>
+  <span class="ruby-identifier">output</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-history" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">history</span><span
+            class="method-args">(address)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="history-source">
+            <pre><span class="ruby-comment"># File app/models/output.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">history</span>(<span class="ruby-identifier">address</span>)
+  <span class="ruby-identifier">outputs</span> = <span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;creator_address = ? or receiver_address = ?&#39;</span>,
+                  <span class="ruby-identifier">address</span>, <span class="ruby-identifier">address</span>).<span class="ruby-identifier">where</span>(<span class="ruby-identifier">input_id</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>).<span class="ruby-identifier">to_a</span>
+
+  <span class="ruby-identifier">history_from_outputs</span>(<span class="ruby-identifier">outputs</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-history_from_outputs" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">history_from_outputs</span><span
+            class="method-args">(outputs)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="history_from_outputs-source">
+            <pre><span class="ruby-comment"># File app/models/output.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">history_from_outputs</span>(<span class="ruby-identifier">outputs</span>)
+  <span class="ruby-identifier">history</span> = { <span class="ruby-identifier">outputList</span><span class="ruby-operator">:</span> [] }
+
+  <span class="ruby-identifier">outputs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">transaction</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">history</span>[<span class="ruby-value">:outputList</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">output_hash</span>(<span class="ruby-identifier">transaction</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">history</span>.<span class="ruby-identifier">to_json</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-output_hash" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">output_hash</span><span
+            class="method-args">(o)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="output_hash-source">
+            <pre><span class="ruby-comment"># File app/models/output.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">output_hash</span>(<span class="ruby-identifier">o</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">blank?</span>
+  {
+    <span class="ruby-identifier">outputId</span><span class="ruby-operator">:</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">id</span>,
+    <span class="ruby-identifier">creatorAddress</span><span class="ruby-operator">:</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">creator_address</span>,
+    <span class="ruby-identifier">payload</span><span class="ruby-operator">:</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">payload</span>,
+    <span class="ruby-identifier">amount</span><span class="ruby-operator">:</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">amount</span>,
+    <span class="ruby-identifier">receiverAddress</span><span class="ruby-operator">:</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">receiver_address</span>,
+    <span class="ruby-identifier">referringInput</span><span class="ruby-operator">:</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">input_id</span>
+  }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
   </section>
 </main>
 
 
 <footer id="validator-badges" role="contentinfo">
   <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.1.
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.2.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 
