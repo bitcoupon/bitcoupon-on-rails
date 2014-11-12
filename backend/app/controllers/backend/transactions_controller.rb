@@ -18,16 +18,17 @@ module Backend
     # Receives a transaction, and verifies it using the Bitcoupon Java library.
     # If the transaction is valid it is saved to the database.
     def verify
-      transaction = transaction_params
+      result = bitcoin.verify_transaction(transaction_json, Output.all_history)
 
-      result = bitcoin.new.verify_transaction(transaction, Output.all_history)
-
-      if result && Transaction.from_json(transaction).save
-        response.headers['id'] = transaction.id.to_s
-        render json: transaction
-      else
-        render json: '{"error":"TRANSACTION NOT SAVED"}', status: 401
+      if result
+        transaction = Transaction.from_json(transaction_json)
+        if transaction.save
+          response.headers['id'] = transaction.id.to_s
+          render json: transaction
+          return
+        end
       end
+      render json: '{"error":"TRANSACTION NOT SAVED"}', status: 401
     end
 
     # POST /backend/output_history
@@ -38,7 +39,7 @@ module Backend
       history_request = set_history_request
       address = JSON.parse(history_request)['address']
 
-      result = bitcoin.new.verify_output_history_request(history_request)
+      result = bitcoin.verify_output_history_request(history_request)
 
       if result
         render json: Output.history(address)
@@ -51,7 +52,7 @@ module Backend
 
     # The mobile client uses null in JSON, instead of empty array.
     # We therefore have to translate the params to this form.
-    def transaction_params
+    def transaction_json
       transaction = params[:transaction]
 
       unless transaction.class.eql?(String)

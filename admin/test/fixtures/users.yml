@@ -2,9 +2,21 @@
 
 one:
   email: admin@gmail.com
+  create_private_key: 5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu
+  create_address: 138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6
+  return_private_key: 5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu
+  return_address: 138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6
 
 two:
   email: user@gmail.com
+  create_private_key: 5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu
+  create_address: 138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6
+  return_private_key: 5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu
+  return_address: 138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6
 
 short_password:
   email: short@gmail.com
+  create_private_key: 5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu
+  create_address: 138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6
+  return_private_key: 5JAy2V6vCJLQnD8rdvB2pF8S6bFZuhEzQ43D95k6wjdVQ4ipMYu
+  return_address: 138u97o2Sv5qUmucSasmeNf5CAb3B1CmD6

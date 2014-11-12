@@ -1,6 +1,8 @@
 require 'test_helper'
 
 # API Test
+# Tests that the admin client can get a valid
+# response from the backend.
 class ApiTest < ActionDispatch::IntegrationTest
   setup do
     @api = 'http://localhost:3002/backend'

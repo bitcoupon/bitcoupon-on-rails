@@ -2,18 +2,12 @@ module Bitcoupon
   module Api
     # Class encapsulating integration with Bitcoupon Java library
     class BitcoinCall
-      attr_accessor :command, :method
-
-      def initialize
-        @command = 'java -jar ../bitcoin/bitcoin-2.0.jar'
-      end
-
       # 2.0 Library
       # Name: generateCreateTransaction
       #   Arguments: String strPrivateKey, String payload
 
-      def generate_create_transaction(private_key, payload_input)
-        @method = 'generateCreateTransaction'
+      def self.generate_create_transaction(private_key, payload_input)
+        method = 'generateCreateTransaction'
         key     = Shellwords.escape private_key
         payload = Shellwords.escape payload_input
 
@@ -25,9 +19,9 @@ module Bitcoupon
       #              String payload, String receiverAddress,
       #              String outputHistoryJson
 
-      def generate_send_transaction(private_key, creator_address, payload,
+      def self.generate_send_transaction(private_key, creator_address, payload,
                                     receiver_address, output_history)
-        @method = 'generateSendTransaction'
+        method = 'generateSendTransaction'
         payload = Shellwords.escape payload
         history = Shellwords.escape output_history
 
@@ -39,9 +33,9 @@ module Bitcoupon
       #   Arguments: String strPrivateKey, String creatorAddress,
       #              String payload, String outputHistoryJson
 
-      def generate_delete_transaction(private_key, creator_address, payload,
-                                      output_history)
-        @method = 'generateDeleteTransaction'
+      def self.generate_delete_transaction(private_key, creator_address,
+                                           payload, output_history)
+        method = 'generateDeleteTransaction'
         payload = Shellwords.escape payload
         history = Shellwords.escape output_history
 
@@ -52,8 +46,8 @@ module Bitcoupon
       # Name: verifyTransaction
       #   Arguments: String transactionJson, String outputHistoryJson
 
-      def verify_transaction(transaction_json, output_history_json)
-        @method = 'verifyTransaction'
+      def self.verify_transaction(transaction_json, output_history_json)
+        method = 'verifyTransaction'
         arg_one = Shellwords.escape transaction_json.chomp
         arg_two = Shellwords.escape output_history_json
 
@@ -69,8 +63,8 @@ module Bitcoupon
       # Name: generateOutputHistoryRequest
       #   Arguments: String strPrivateKey
 
-      def generate_output_history_request(private_key)
-        @method = 'generateOutputHistoryRequest'
+      def self.generate_output_history_request(private_key)
+        method = 'generateOutputHistoryRequest'
 
         `#{command} #{method} #{private_key}`
       end
@@ -78,8 +72,8 @@ module Bitcoupon
       # Name: verifyOutputHistoryRequest
       #   Arguments: String outputHistoryRequestJson
 
-      def verify_output_history_request(output_history_request)
-        @method = 'verifyOutputHistoryRequest'
+      def self.verify_output_history_request(output_history_request)
+        method = 'verifyOutputHistoryRequest'
         request = Shellwords.escape output_history_request
 
         output = `#{command} #{method} #{request}`
@@ -94,8 +88,8 @@ module Bitcoupon
       # Name: getCoupons
       #   Arguments: String address, String outputHistoryJson
 
-      def get_coupons(address, output_history_json)
-        @method = 'getCoupons'
+      def self.get_coupons(address, output_history_json)
+        method = 'getCoupons'
         address     = Shellwords.escape address
         history = Shellwords.escape output_history_json
 
@@ -105,8 +99,8 @@ module Bitcoupon
       # Name: getCouponOwners
       #   Arguments: String creatorAddress, String outputHistoryJson
 
-      def get_coupon_owners(address, output_history_json)
-        @method = 'getCouponOwners'
+      def self.get_coupon_owners(address, output_history_json)
+        method = 'getCouponOwners'
         address     = Shellwords.escape address
         history = Shellwords.escape output_history_json
 
@@ -116,17 +110,21 @@ module Bitcoupon
       # Name: generatePrivateKey
       #   Arguments: none
 
-      def generate_private_key
-        @method = 'generatePrivateKey'
+      def self.generate_private_key
+        method = 'generatePrivateKey'
         `#{command} #{method}`
       end
 
       # Name: generateAddress
       #   Arguments: String strPrivateKey
 
-      def generate_address(private_key)
-        @method = 'generateAddress'
+      def self.generate_address(private_key)
+        method = 'generateAddress'
         `#{command} #{method} #{private_key}`
+      end
+
+      def self.command
+        'java -jar ../bitcoin/bitcoin-2.0.jar'
       end
     end
   end

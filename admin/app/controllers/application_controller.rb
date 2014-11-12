@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  private
+
   def backend_request
     Bitcoupon::Api::BackendRequest
   end
@@ -44,25 +46,25 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # rubocop:disable Metrics/MethodLength
   def translate_word(word)
     address_cache = Address.where(word: word)
     if address_cache.any?
       address_cache.first.address.chomp
     else
-      request = backend_request.new :post, '/word'
-      request.content_type = 'application/json'
-      request.body = { word: word.chomp }.to_json
-      result = request.start
+      result = word_request(word)
 
       address = JSON.parse(result.body)['address']
       Address.create(address: address.chomp, word: word) if address
       address
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
-  private
+  def word_request(word)
+    request = backend_request.new :post, '/word'
+    request.content_type = 'application/json'
+    request.body = { word: word.chomp }.to_json
+    request.start
+  end
 
   def require_signin!
     return if current_user

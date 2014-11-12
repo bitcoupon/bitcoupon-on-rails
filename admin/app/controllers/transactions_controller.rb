@@ -26,7 +26,7 @@ class TransactionsController < ApplicationController
 
     output = ''
     amount.times do
-      output = bitcoin.new.generate_create_transaction(private_key, payload)
+      output = bitcoin.generate_create_transaction(private_key, payload)
       @id = verify_transaction output unless output.blank?
     end
 
@@ -90,15 +90,15 @@ has been deleted"
   private
 
   def set_coupons
-    output = bitcoin.new
+    output = bitcoin
                .get_coupons(create_address, output_history(create_private_key))
     @coupons = JSON.parse(output)['coupons']
 
-    output = bitcoin.new
+    output = bitcoin
                .get_coupons(return_address, output_history(return_private_key))
     @coupons_returned = JSON.parse(output)['coupons']
 
-    output = bitcoin.new.get_coupon_owners(
+    output = bitcoin.get_coupon_owners(
               create_address, output_history(create_private_key))
     @coupons_circulating = JSON.parse(output)['couponOwners']
 
@@ -153,7 +153,7 @@ has been deleted"
     if current_user
       current_user.output_history_request(private_key)
     else
-      bitcoin.new.generate_output_history_request(private_key)
+      bitcoin.generate_output_history_request(private_key)
     end
   end
 
@@ -178,7 +178,7 @@ has been deleted"
     if receiver_address.nil?
       nil
     else
-      bitcoin.new.generate_send_transaction(
+      bitcoin.generate_send_transaction(
                     create_private_key, creator_address, payload,
                     receiver_address, output_history(create_private_key))
     end
@@ -194,7 +194,7 @@ has been deleted"
     creator_address = params['public_key']
     payload = params['payload']
 
-    bitcoin.new.generate_delete_transaction(
+    bitcoin.generate_delete_transaction(
                   private_key, creator_address, payload,
                   output_history(private_key))
   end
