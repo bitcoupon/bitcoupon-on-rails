@@ -21,8 +21,7 @@ namespace :doc do
                  .drop(1)
                  .reverse
                  .join('/')
-    }" +
-    '/documentation/backend'
+    }" + '/documentation/backend'
     `rmdir doc`
     puts 'Removed doc from backend'
   end

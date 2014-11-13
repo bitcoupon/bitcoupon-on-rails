@@ -1,7 +1,7 @@
 # TransactionsController
 # rubocop:disable Metrics/ClassLength
 class TransactionsController < ApplicationController
-  before_filter :require_signin!
+  before_action :require_signin!
 
   include ActionView::Helpers::TextHelper
 
@@ -12,62 +12,39 @@ class TransactionsController < ApplicationController
   end
 
   # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Metrics/PerceivedComplexity
-  # rubocop:disable Metrics/CyclomaticComplexity
   def generate_create
-    private_key = create_private_key
-    payload     = build_payload(params[:title],
-                                params[:return_word],
-                                params[:description])
-    amount      = params[:amount].to_i
-    amount      = 1 if amount.nil? || amount.eql?(0) || amount < 1
-
-    return if refuse_payload_with_newlines payload
-
     output = ''
-    amount.times do
-      output = bitcoin.generate_create_transaction(private_key, payload)
-      @id = verify_transaction output unless output.blank?
+    create_amount.times do
+      output = bitcoin.generate_create_transaction(create_private_key,
+                                                   create_payload)
+      _id = verify_transaction output unless output.blank?
     end
 
     if output.blank?
       render(text: 'Something went wrong')
     else
-      respond_to do |format|
-        format.js do
-          flash[:notice] = "#{pluralize(amount, 'coupon')} with \
+      flash[:notice] = "#{pluralize(amount, 'coupon')} with \
 title \"#{JSON.parse(payload)['title']}\" created"
-          render 'reload'
-        end
-      end
+      render js: 'window.location.reload();'
     end
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
-  # rubocop:enable Metrics/PerceivedComplexity
 
   def generate_send
     output = send_transaction
 
     if translate_word(params['receiver_address'].downcase).blank?
-      respond_to do |format|
-        format.js do
-          flash[:alert] = "Address not found \"#{params['receiver_address']}\"."
-          render 'reload'
-        end
-      end
+      flash[:alert] = "Address not found \"#{params['receiver_address']}\"."
+      render js: 'window.location.reload();'
     elsif output.blank?
       render text: 'Something went wrong'
     else
-      @id = verify_transaction output
-      respond_to do |format|
-        format.js do
-          flash[:notice] = "Coupon #{JSON.parse(params[:payload])['title']}\
+      _id = verify_transaction output
+      flash[:notice] = "Coupon #{JSON.parse(params[:payload])['title']}\
  has been sent to #{params['receiver_address']}"
-          render 'reload'
-        end
-      end
+      render js: 'window.location.reload();'
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   def generate_delete
     output = delete_transaction
@@ -75,31 +52,26 @@ title \"#{JSON.parse(payload)['title']}\" created"
     if output.blank?
       render text: 'Something went wrong'
     else
-      @id = verify_transaction output
-      respond_to do |format|
-        format.js do
-          flash[:notice] = "Coupon #{JSON.parse(params[:payload])['title']}\
+      _id = verify_transaction output
+      flash[:notice] = "Coupon #{JSON.parse(params[:payload])['title']}\
 has been deleted"
-          render 'reload'
-        end
-      end
+      render js: 'window.location.reload();'
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
   private
 
   def set_coupons
-    output = bitcoin
-               .get_coupons(create_address, output_history(create_private_key))
+    output = bitcoin.get_coupons(create_address,
+                                 output_history(create_private_key))
     @coupons = JSON.parse(output)['coupons']
 
-    output = bitcoin
-               .get_coupons(return_address, output_history(return_private_key))
+    output = bitcoin.get_coupons(return_address,
+                                 output_history(return_private_key))
     @coupons_returned = JSON.parse(output)['coupons']
 
-    output = bitcoin.get_coupon_owners(
-              create_address, output_history(create_private_key))
+    output = bitcoin.get_coupon_owners(create_address,
+                                       output_history(create_private_key))
     @coupons_circulating = JSON.parse(output)['couponOwners']
 
     reject_if_current_user
@@ -116,19 +88,19 @@ has been deleted"
     end
   end
 
-  def build_payload(title, word, description)
-    {
-      title: title,
-      description: description,
-      returnWord: word,
-      timestamp: (Time.now.to_i * 1000).to_s
-    }.to_json
+  def create_amount
+    amount      = params[:amount].to_i
+    amount      = 1 if amount.nil? || amount < 1
+    amount
   end
 
-  def refuse_payload_with_newlines(payload)
-    alert_msg = 'Do not use newlines in title'
-    redirect_to(coupons_path, alert: alert_msg) if payload.match('\n')
-    payload.match('\n')
+  def create_payload
+    {
+      title: params[:title],
+      description: params[:description],
+      returnWord: params[:return_word],
+      timestamp: (Time.now.to_i * 1000).to_s
+    }.to_json
   end
 
   def transaction_history

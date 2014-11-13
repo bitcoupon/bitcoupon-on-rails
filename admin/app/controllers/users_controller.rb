@@ -1,7 +1,7 @@
 # UsersController
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_filter :require_signin!, except: [:welcome]
+  before_action :require_signin!, except: [:welcome]
 
   # GET /users
   def index

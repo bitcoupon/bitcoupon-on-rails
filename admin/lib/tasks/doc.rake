@@ -21,8 +21,7 @@ namespace :doc do
                  .drop(1)
                  .reverse
                  .join('/')
-    }" +
-    '/documentation/admin'
+    }" + '/documentation/admin'
     `rmdir doc`
     puts 'Removed doc from admin'
   end

@@ -1,7 +1,7 @@
 # User
 class User < ActiveRecord::Base
   has_secure_password
-  validates_presence_of :password, on: :create
+  validates :password, presence: true, on: :create
   validates :password, length: { minimum: 8 }
 
   # Returns true if user has set password
@@ -20,8 +20,7 @@ class User < ActiveRecord::Base
   def output_history_request(private_key)
     if self[:output_history_request].blank?
       self[:output_history_request] = bitcoin
-                                        .generate_output_history_request(
-                                          private_key)
+        .generate_output_history_request(private_key)
     else
       self[:output_history_request]
     end

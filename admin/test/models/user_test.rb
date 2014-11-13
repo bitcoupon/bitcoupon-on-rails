@@ -8,6 +8,6 @@ class UserTest < ActiveSupport::TestCase
 
     refute user.save, 'saved user with short password'
     assert user.errors.messages[:password].first
-               .eql?('is too short (minimum is 8 characters)'), 'wrong error'
+      .eql?('is too short (minimum is 8 characters)'), 'wrong error'
   end
 end

@@ -2,3 +2,6 @@ AllCops:
   Exclude:
     - 'admin/db/**/*'
     - 'backend/db/**/*'
+  RunRailsCops: true
+Metrics/AbcSize:
+  Max: 25
