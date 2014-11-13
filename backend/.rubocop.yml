@@ -1,7 +1,7 @@
 AllCops:
   Exclude:
-    - 'admin/db/**/*'
-    - 'backend/db/**/*'
+    - 'db/**/*'
+    - 'vendor/**/*'
   RunRailsCops: true
 Metrics/AbcSize:
   Max: 25
