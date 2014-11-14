@@ -53,7 +53,7 @@ title \"#{JSON.parse(create_payload)['title']}\" created"
     else
       _id = verify_transaction output
       flash[:notice] = "Coupon #{JSON.parse(params[:payload])['title']}\
-has been deleted"
+ has been deleted"
     end
     render js: 'window.location.reload();'
   end
