@@ -21,12 +21,12 @@ class TransactionsController < ApplicationController
     end
 
     if output.blank?
-      render(text: 'Something went wrong')
+      flash[:alert] = 'Something went wrong'
     else
-      flash[:notice] = "#{pluralize(amount, 'coupon')} with \
-title \"#{JSON.parse(payload)['title']}\" created"
-      render js: 'window.location.reload();'
+      flash[:notice] = "#{pluralize(create_amount, 'coupon')} with \
+title \"#{JSON.parse(create_payload)['title']}\" created"
     end
+    render js: 'window.location.reload();'
   end
 
   def generate_send
@@ -34,15 +34,14 @@ title \"#{JSON.parse(payload)['title']}\" created"
 
     if translate_word(params['receiver_address'].downcase).blank?
       flash[:alert] = "Address not found \"#{params['receiver_address']}\"."
-      render js: 'window.location.reload();'
     elsif output.blank?
-      render text: 'Something went wrong'
+      flash[:alert] = 'Something went wrong'
     else
       _id = verify_transaction output
       flash[:notice] = "Coupon #{JSON.parse(params[:payload])['title']}\
  has been sent to #{params['receiver_address']}"
-      render js: 'window.location.reload();'
     end
+    render js: 'window.location.reload();'
   end
   # rubocop:enable Metrics/MethodLength
 
@@ -50,13 +49,13 @@ title \"#{JSON.parse(payload)['title']}\" created"
     output = delete_transaction
 
     if output.blank?
-      render text: 'Something went wrong'
+      flash[:alert] = 'Something went wrong'
     else
       _id = verify_transaction output
       flash[:notice] = "Coupon #{JSON.parse(params[:payload])['title']}\
 has been deleted"
-      render js: 'window.location.reload();'
     end
+    render js: 'window.location.reload();'
   end
 
   private
