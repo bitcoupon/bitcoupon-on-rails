@@ -2,5 +2,5 @@
   <%= text_field_tag 'public_key', creator_address, hidden: true %>
   <%= text_field_tag 'payload', payload, hidden: true %>
   <%= text_field_tag 'priv_key', private_key, hidden: true %>
-  <%= submit_tag submit_name, class: "btn btn-default", data: { disable_with: "#{submit_name.eql?('Delete') ? 'Deleting...' : 'Accepting...'}" } %>
+  <%= submit_tag submit_name, class: "btn btn-default", data: { disable_with: "#{submit_name.eql?('Accept') ? 'Accepting...' : 'Cancelling...'}" } %>
 <% end %>
