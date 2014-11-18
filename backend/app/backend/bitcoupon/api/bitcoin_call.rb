@@ -3,6 +3,10 @@ module Bitcoupon
     # Class encapsulating integration with Bitcoupon Java library
     class BitcoinCall
       # 2.0 Library
+      def self.command
+        'java -jar ../bitcoin/bitcoin-2.0.jar'
+      end
+
       # Name: generateCreateTransaction
       #   Arguments: String strPrivateKey, String payload
 
@@ -121,10 +125,6 @@ module Bitcoupon
       def self.generate_address(private_key)
         method = 'generateAddress'
         `#{command} #{method} #{private_key}`
-      end
-
-      def self.command
-        'java -jar ../bitcoin/bitcoin-2.0.jar'
       end
     end
   end
