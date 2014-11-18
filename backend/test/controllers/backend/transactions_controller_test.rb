@@ -19,7 +19,7 @@ module Backend
       end
     end
 
-    test 'should return when posting with invalid token' do
+    test 'should return 401 when posting with invalid token' do
       [:verify, :output_history].each do |endpoint|
         request.headers['token'] = 'something'
         post endpoint
